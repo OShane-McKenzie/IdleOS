@@ -20,6 +20,16 @@ import androidx.compose.ui.unit.dp
 import contentProvider
 import objects.Sizes
 
+/**
+ * A composable function that renders a theme button.
+ *
+ * @param modifier The modifier for the button. Defaults to an empty modifier.
+ * @param icon The icon vector to be displayed on the button. Defaults to Icons.Rounded.Star.
+ * @param tint The color tint for the icon. Defaults to Color(0xfffdfab5).
+ * @param description The content description for the button. Defaults to an empty string.
+ * @param label The label text to be displayed on the button. Defaults to "Light".
+ * @param onClick The click event handler for the button. Defaults to an empty function.
+ */
 @Composable
 fun ThemeButton(
     modifier: Modifier=Modifier,

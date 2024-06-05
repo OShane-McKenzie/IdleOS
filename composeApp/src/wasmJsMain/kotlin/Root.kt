@@ -14,7 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.isSecondaryPressed
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontFamily
@@ -24,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import components.DockItem
 import components.PanelWidget
+import components.SimpleAnimator
 import idleos.composeapp.generated.resources.*
 import idleos.composeapp.generated.resources.Res
+import kotlinx.coroutines.*
+import objects.AnimationStyle
 import objects.ParentConfig
 import org.jetbrains.compose.resources.painterResource
 import osComponents.*
@@ -41,6 +48,13 @@ class Root {
             mutableStateOf(1.0f)
         }
         var controlCenterOffsetY by rememberSaveable {
+            mutableStateOf(1.0f)
+        }
+
+        var osContextMenuOffsetX by rememberSaveable {
+            mutableStateOf(1.0f)
+        }
+        var osContextMenuOffsetY by rememberSaveable {
             mutableStateOf(1.0f)
         }
 
@@ -77,8 +91,22 @@ class Root {
         var showCalendar by rememberSaveable {
             mutableStateOf(false)
         }
+
+        var showWallpaperPicker by remember {
+            mutableStateOf(false)
+        }
+
+        var showOsContextMenu by remember {
+            mutableStateOf(false)
+        }
+
         var dockHeight by remember { mutableFloatStateOf(1.0f) }
         var panelHeight by remember { mutableFloatStateOf(1.0f) }
+
+        var rightClickOffset by remember { mutableStateOf<Offset?>(null) }
+        var wallpaper by remember {
+            mutableStateOf(Res.drawable.one)
+        }
 
         fun turnOnWidget(id:String = ""){
             when(id){
@@ -111,9 +139,14 @@ class Root {
                     showControlCenter = false
                     showInfoCenter = false
                     showOsInfo = false
+                    showOsContextMenu = false
                 }
             }
         }
+        var reloadWallpaper by remember {
+            mutableStateOf(false)
+        }
+
         Box(
             modifier = Modifier.fillMaxSize().onGloballyPositioned {
                 layoutConfigurator.parentWidth.value = it.size.width
@@ -121,14 +154,30 @@ class Root {
                 layoutConfigurator.parentSize.value = (it.size.width * it.size.height)
             }
         ){
-            Image(
-                painter = painterResource(Res.drawable.one),
-                contentDescription = "Wallpaper",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .height(layoutConfigurator.parentHeight.value.dp)
-                    .width(layoutConfigurator.parentWidth.value.dp)
-            )
+            if(reloadWallpaper){
+                SimpleAnimator(style = AnimationStyle.SCALE_IN_CENTER) {
+                    Image(
+                        painter = painterResource(wallpaper),
+                        contentDescription = "Wallpaper",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .height(layoutConfigurator.parentHeight.value.dp)
+                            .width(layoutConfigurator.parentWidth.value.dp)
+                    )
+                }
+
+            }else{
+                SimpleAnimator(style = AnimationStyle.SCALE_IN_CENTER) {
+                    Image(
+                        painter = painterResource(wallpaper),
+                        contentDescription = "Wallpaper",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .height(layoutConfigurator.parentHeight.value.dp)
+                            .width(layoutConfigurator.parentWidth.value.dp)
+                    )
+                }
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -137,6 +186,27 @@ class Root {
                         indication = null
                     ) {
                         turnOnWidget("none")
+                    }
+                    .pointerInput(Unit) {
+                        awaitPointerEventScope {
+                            while (true) {
+                                val event = awaitPointerEvent()
+                                if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
+                                    rightClickOffset = event.changes.first().position
+                                    CoroutineScope(Dispatchers.Default).launch{
+                                        withContext(Dispatchers.Main){
+                                            showOsContextMenu = false
+                                        }
+                                        delay(20)
+                                        withContext(Dispatchers.Main){
+                                            osContextMenuOffsetX = rightClickOffset!!.x
+                                            osContextMenuOffsetY = rightClickOffset!!.y
+                                            showOsContextMenu = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
             ){
                 Panel(
@@ -201,7 +271,8 @@ class Root {
                                 Icon(
                                     modifier = Modifier.fillMaxSize(),
                                     imageVector = Icons.Rounded.Settings,
-                                    contentDescription = "Control Center"
+                                    contentDescription = "Control Center",
+                                    tint = contentProvider.globalTextColor.value,
                                 )
                             }
                         }
@@ -221,7 +292,8 @@ class Root {
                                 Icon(
                                     modifier = Modifier.fillMaxSize(),
                                     imageVector = Icons.Rounded.Menu,
-                                    contentDescription = "Menu"
+                                    contentDescription = "Menu",
+                                    tint = contentProvider.globalTextColor.value,
                                 )
                             }
                         }
@@ -258,10 +330,31 @@ class Root {
                 if(showOsInfo){
                     OsInfo(modifier = Modifier.offset { IntOffset(osInfoCenterOffsetX.roundToInt(), osInfoCenterOffsetY.roundToInt()) })
                 }
+
+                if(showOsContextMenu){
+                    OsContextMenu(
+                        modifier = Modifier.offset { IntOffset(osContextMenuOffsetX.roundToInt(), osContextMenuOffsetY.roundToInt()) }
+                    ) {
+                        showOsContextMenu = false
+                        if(it == "Change Wallpaper"){
+                            showWallpaperPicker = true
+                        }
+                    }
+                }
+                if(showWallpaperPicker){
+                    WallpaperPicker(
+                        onDismissRequest = {showWallpaperPicker = false},
+                        modifier = Modifier.offset { IntOffset(1.percentOfParent(ParentConfig.WIDTH).roundToInt(),(70.percentOfParent(ParentConfig.HEIGHT)).roundToInt()) }
+                    ) {
+                        wallpaper = it
+                        reloadWallpaper = !reloadWallpaper
+                    }
+                }
             }
             //Brightness overlay
             Column(modifier = Modifier.fillMaxSize().background(color = Color.Black.copy(alpha = contentProvider.brightness.value))){
             }
+
         }
     }
 }

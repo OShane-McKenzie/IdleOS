@@ -30,12 +30,16 @@ import objects.AnimationStyle
 
 /**
  * Composable function that provides simple animations based on the specified style.
- * @param style The animation style to apply (default is "right").
+ *
+ * @param style The animation style to apply (default is AnimationStyle.RIGHT).
+ * @param modifier The modifier for the animated content (default is Modifier).
+ * @param task The task to be executed after the animation (default is an empty lambda).
+ * @param animationCounter The counter for the animation (default is 0).
  * @param content The content to animate.
  */
 @Composable
 fun SimpleAnimator(
-    style: AnimationStyle,
+    style: AnimationStyle = AnimationStyle.RIGHT,
     modifier: Modifier = Modifier,
     task: (Int) -> Unit = {},
     animationCounter: Int = 0,

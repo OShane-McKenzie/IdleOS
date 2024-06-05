@@ -27,6 +27,13 @@ import percentOfParent
 import richColors
 import setDefaultColorTheme
 
+/**
+ * ControlCenter is a composable function that displays a control center UI.
+ *
+ * @param modifier The modifier for the control center UI.
+ * @return The control center UI.
+ */
+
 @Composable
 fun ControlCenter(modifier: Modifier = Modifier){
     var animate by remember {

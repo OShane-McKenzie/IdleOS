@@ -20,7 +20,13 @@ import kotlinx.datetime.*
 import objects.AnimationStyle
 import objects.Sizes
 
-
+/**
+ * A composable function that represents an idle calendar.
+ *
+ * @param modifier The modifier for the calendar. Default is an empty modifier.
+ *
+ * @return The composable function that represents the idle calendar.
+ */
 @Composable
 fun IdleCalendar(modifier: Modifier = Modifier) {
     val currentMoment = Clock.System.now()
@@ -56,6 +62,12 @@ fun IdleCalendar(modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * Composable function that displays the month and year in a header format.
+ *
+ * @param month The month to be displayed.
+ * @param year The year to be displayed.
+ */
 @Composable
 fun MonthHeader(month: Month, year: Int) {
 
@@ -70,6 +82,11 @@ fun MonthHeader(month: Month, year: Int) {
     )
 }
 
+/**
+ * Composable function that displays the header row for the days of the week in a calendar.
+ *
+ * @return A composable that displays the header row for the days of the week.
+ */
 @Composable
 fun DaysOfWeekHeader() {
     val daysOfWeek = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
@@ -132,6 +149,12 @@ fun DaysGrid(currentDate: LocalDate) {
     }
 }
 
+/**
+ * Renders a grid of days in a month.
+ *
+ * @param currentDate The current date.
+ * @return The composable function that renders the days grid.
+ */
 @Composable
 fun DayBox(day: String, isToday:Boolean = false) {
     Box(
@@ -152,6 +175,12 @@ fun DayBox(day: String, isToday:Boolean = false) {
     }
 }
 
+/**
+ * Returns the number of days in a given month, taking into account whether it is a leap year or not.
+ *
+ * @param isLeapYear a boolean indicating whether the year is a leap year or not
+ * @return the number of days in the given month
+ */
 fun Month.length(isLeapYear: Boolean): Int {
     return when (this) {
         Month.JANUARY -> 31

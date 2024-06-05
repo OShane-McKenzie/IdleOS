@@ -26,6 +26,11 @@ import objects.Sizes
 import percentOfParent
 
 
+/**
+ * Renders the InfoCenter composable.
+ *
+ * @param modifier The modifier for the InfoCenter composable.
+ */
 @Composable
 fun InfoCenter(modifier: Modifier = Modifier){
     var animate by remember {

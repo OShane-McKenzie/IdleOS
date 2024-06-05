@@ -13,6 +13,15 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 
+/**
+ * Renders a styled text component with a label and a value.
+ *
+ * @param modifier The modifier for the component.
+ * @param label The label text.
+ * @param value The value text.
+ * @param labelSize The size of the label text. Default is 16.
+ * @param valueSize The size of the value text. Default is 16.
+ */
 @Composable
 fun StyledText(modifier: Modifier=Modifier, label: String, value: String, labelSize:Int = 16, valueSize:Int = 16) {
     val styledText = buildAnnotatedString {

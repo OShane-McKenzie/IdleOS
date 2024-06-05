@@ -1,5 +1,7 @@
 
 import androidx.compose.ui.graphics.Color
+import idleos.composeapp.generated.resources.Res
+import idleos.composeapp.generated.resources.*
 import jsFeatures.getNetworkInfo
 import jsFeatures.getRamInfo
 import kotlinx.coroutines.*
@@ -124,7 +126,18 @@ val richColors = listOf(
     Color(0xffffffff)
 )
 
-
-
+val wallPapers = listOf(
+    Res.drawable.one,
+    Res.drawable.two,
+    Res.drawable.three,
+    Res.drawable.four,
+    Res.drawable.five,
+    Res.drawable.six,
+    Res.drawable.seven,
+    Res.drawable.eight,
+    Res.drawable.nine,
+    Res.drawable.ten,
+    Res.drawable.eleven
+)
 
 

@@ -15,6 +15,18 @@ import androidx.compose.ui.unit.dp
 import contentProvider
 import kotlinx.coroutines.delay
 
+/**
+ * A composable function that represents a panel widget.
+ *
+ * @param modifier The modifier for the panel widget.
+ * @param isWidgetClickable Whether the panel widget is clickable. Default is true.
+ * @param onClick The callback function to be invoked when the panel widget is clicked. Default is an empty function.
+ * @param id The ID of the panel widget. Default is an empty string.
+ * @param onPositioned The callback function to be invoked when the panel widget is positioned. Default is a function that does nothing.
+ * @param content The content composable function that takes the offsetX, offsetY, and ID of the panel widget and renders the content.
+ *
+ * @return The rendered panel widget.
+ */
 @Composable
 fun PanelWidget(
     modifier: Modifier = Modifier,

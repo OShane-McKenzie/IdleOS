@@ -14,6 +14,14 @@ import objects.ParentConfig.*
 import objects.Sizes
 import percentOfParent
 
+/**
+ * A composable function that represents a panel with three sections: start, middle, and end.
+ *
+ * @param modifier The modifier for the panel. Defaults to an empty modifier.
+ * @param start A composable function that takes the width and height of the panel and renders the start section. Defaults to a lambda that does nothing.
+ * @param middle A composable function that takes the width and height of the panel and renders the middle section. Defaults to a lambda that does nothing.
+ * @param end A composable function that takes the width and height of the panel and renders the end section. Defaults to a lambda that does nothing.
+ */
 @Composable
 fun Panel(
     modifier: Modifier = Modifier,

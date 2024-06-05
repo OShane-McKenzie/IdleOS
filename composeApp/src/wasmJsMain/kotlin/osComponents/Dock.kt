@@ -14,6 +14,15 @@ import contentProvider
 import objects.ParentConfig.*
 import percentOfParent
 
+/**
+ * A composable function that represents a dock.
+ *
+ * @param modifier The modifier for the dock. Default is an empty modifier.
+ * @param items A lambda function that takes the width and height of the dock as parameters and returns Unit.
+ *              Default is a lambda function that takes the width and height as parameters and does nothing.
+ *
+ * @return The composable function that represents the dock.
+ */
 @Composable
 fun Dock(modifier: Modifier = Modifier, items: @Composable (Float,Float)-> Unit={width, height->}){
     val scrollState = rememberScrollState()

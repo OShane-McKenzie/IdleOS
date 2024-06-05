@@ -20,6 +20,16 @@ import idleos.composeapp.generated.resources.logo_3
 import objects.Sizes
 import org.jetbrains.compose.resources.painterResource
 
+/**
+ * A composable function that represents a single item in a dock.
+ *
+ * @param modifier The modifier for the dock item. Default is an empty modifier.
+ * @param id The unique identifier for the dock item. Default is "default".
+ * @param height The height of the dock item. Default is 0.0f.
+ * @param width The width of the dock item. Default is 0.0f.
+ * @param painter The painter for the image in the dock item. Default is a painter resource for the "logo_3" drawable.
+ * @param onClick The callback function when the dock item is clicked. Default is an empty function.
+ */
 @Composable
 fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0.0f, width:Float=0.0f, painter:Painter = painterResource(Res.drawable.logo_3),onClick:(Boolean)->Unit={}){
     var isActive by remember {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,14 +17,11 @@ import objects.AnimationStyle
 import objects.ParentConfig
 import percentOfParent
 
-/**
- * Renders the OS information component.
- *
- * @param modifier The modifier for the component. Default is an empty modifier.
- * @return The composable function that renders the OS information component.
- */
 @Composable
-fun OsInfo(modifier:Modifier = Modifier){
+fun OsContextMenu(
+    modifier: Modifier = Modifier,
+    onDismissRequest: (String) -> Unit={}
+){
     var animate by remember {
         mutableStateOf(false)
     }
@@ -38,7 +36,7 @@ fun OsInfo(modifier:Modifier = Modifier){
             .height(10.percentOfParent(ParentConfig.HEIGHT).dp)
     ){
         if(animate){
-            SimpleAnimator(AnimationStyle.DOWN){
+            SimpleAnimator(AnimationStyle.SCALE_IN_CENTER){
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -47,34 +45,36 @@ fun OsInfo(modifier:Modifier = Modifier){
                             shape = RoundedCornerShape(8)
                         )
                         .padding(5.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(3.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text("About IdleOS",
+                    Text("Change Wallpaper",
                         color = contentProvider.globalTextColor.value,
                         modifier = Modifier.fillMaxWidth().background(
                             shape = RoundedCornerShape(13),
                             color = contentProvider.globalColor.value.copy(alpha = 0.0f)
                         ).padding(3.dp).clickable {
-
+                            onDismissRequest.invoke("Change Wallpaper")
                         }
                     )
-                    Text("Logout",
+                    Divider()
+                    Text("Settings",
                         color = contentProvider.globalTextColor.value,
                         modifier = Modifier.fillMaxWidth().background(
                             shape = RoundedCornerShape(13),
                             color = contentProvider.globalColor.value.copy(alpha = 0.0f)
                         ).padding(3.dp).clickable {
-
+                            onDismissRequest.invoke("Settings")
                         }
                     )
+                    Divider()
                     Text("Shutdown",
                         color = contentProvider.globalTextColor.value,
                         modifier = Modifier.fillMaxWidth().background(
                             shape = RoundedCornerShape(13),
                             color = contentProvider.globalColor.value.copy(alpha = 0.0f)
                         ).padding(3.dp).clickable {
-
+                            onDismissRequest.invoke("Shutdown")
                         }
                     )
                 }
