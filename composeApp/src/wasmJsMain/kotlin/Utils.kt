@@ -12,15 +12,15 @@ import objects.ParentConfig
 fun Int.percentOfParent(config: ParentConfig):Float{
     return when(config){
         ParentConfig.WIDTH->{
-            (this/100f)*layoutConfigurator.parentWidth.value
+            ((this.toFloat())/100f)*layoutConfigurator.parentWidth.value
         }
 
         ParentConfig.HEIGHT ->{
-            (this/100f)*layoutConfigurator.parentHeight.value
+            ((this.toFloat())/100f)*layoutConfigurator.parentHeight.value
         }
 
         ParentConfig.SIZE ->{
-            (this/100f)*layoutConfigurator.parentSize.value
+            ((this.toFloat())/100f)*layoutConfigurator.parentSize.value
         }
     }
 }

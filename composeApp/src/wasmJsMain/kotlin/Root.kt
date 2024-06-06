@@ -2,6 +2,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import components.DockItem
+import components.IdleAppContiner
 import components.PanelWidget
 import components.SimpleAnimator
 import idleos.composeapp.generated.resources.*
@@ -47,6 +50,8 @@ class Root {
         var controlCenterOffsetX by rememberSaveable {
             mutableStateOf(1.0f)
         }
+        var offsetX by remember { mutableStateOf(0f) }
+        var offsetY by remember { mutableStateOf(0f) }
         var controlCenterOffsetY by rememberSaveable {
             mutableStateOf(1.0f)
         }
@@ -350,6 +355,18 @@ class Root {
                         reloadWallpaper = !reloadWallpaper
                     }
                 }
+
+                IdleAppContiner(
+                    modifier = Modifier.offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
+                        .pointerInput(Unit) {
+                            detectDragGestures { change, dragAmount ->
+                                change.consume()
+                                offsetX += dragAmount.x
+                                offsetY += dragAmount.y
+                            }
+                            detectTapGestures {  }
+                        }.align(Alignment.Center)
+                ) {  }
             }
             //Brightness overlay
             Column(modifier = Modifier.fillMaxSize().background(color = Color.Black.copy(alpha = contentProvider.brightness.value))){
