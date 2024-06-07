@@ -7,6 +7,7 @@ import jsFeatures.getRamInfo
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import objects.ParentConfig
+import kotlin.math.floor
 
 
 fun Int.percentOfParent(config: ParentConfig):Float{
@@ -109,6 +110,19 @@ fun setDefaultColorTheme(theme:String="light"){
     }
 }
 
+fun Float.toRoundedInt(): Int {
+    try{
+        return if(!this.isNaN()){
+            if (this > Int.MAX_VALUE) Int.MAX_VALUE else if (this < Int.MIN_VALUE) Int.MIN_VALUE else floor(this + 0.5f).toInt()
+        }else{
+            0
+        }
+    }catch (e:Exception){
+        println("$e")
+        return 0
+    }
+
+}
 inline fun Unit.then(block: Unit.() -> Unit) {
     val result = this
     result.block()

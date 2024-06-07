@@ -29,7 +29,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import components.DockItem
-import components.IdleAppContiner
+import components.IdleAppContainer
+
 import components.PanelWidget
 import components.SimpleAnimator
 import idleos.composeapp.generated.resources.*
@@ -39,7 +40,7 @@ import objects.AnimationStyle
 import objects.ParentConfig
 import org.jetbrains.compose.resources.painterResource
 import osComponents.*
-import kotlin.math.roundToInt
+
 
 class Root {
 
@@ -52,6 +53,7 @@ class Root {
         }
         var offsetX by remember { mutableStateOf(0f) }
         var offsetY by remember { mutableStateOf(0f) }
+        var appAlignment by remember { mutableStateOf(Alignment.Center) }
         var controlCenterOffsetY by rememberSaveable {
             mutableStateOf(1.0f)
         }
@@ -323,22 +325,22 @@ class Root {
                             .align(Alignment.TopCenter)
                             .height(43.percentOfParent(ParentConfig.HEIGHT).dp)
                             .width(30.percentOfParent(ParentConfig.WIDTH).dp)
-                            .offset { IntOffset(calendarOffsetX.roundToInt(), calendarOffsetY.roundToInt()) }
+                            .offset { IntOffset(calendarOffsetX.toRoundedInt(), calendarOffsetY.toRoundedInt()) }
                     )
                 }
                 if(showControlCenter){
-                    ControlCenter(modifier = Modifier.offset { IntOffset(controlCenterOffsetX.roundToInt(), controlCenterOffsetY.roundToInt()) })
+                    ControlCenter(modifier = Modifier.offset { IntOffset(controlCenterOffsetX.toRoundedInt(), controlCenterOffsetY.toRoundedInt()) })
                 }
                 if(showInfoCenter){
-                    InfoCenter(modifier = Modifier.offset { IntOffset(infoCenterOffsetX.roundToInt(), infoCenterOffsetY.roundToInt()) })
+                    InfoCenter(modifier = Modifier.offset { IntOffset(infoCenterOffsetX.toRoundedInt(), infoCenterOffsetY.toRoundedInt()) })
                 }
                 if(showOsInfo){
-                    OsInfo(modifier = Modifier.offset { IntOffset(osInfoCenterOffsetX.roundToInt(), osInfoCenterOffsetY.roundToInt()) })
+                    OsInfo(modifier = Modifier.offset { IntOffset(osInfoCenterOffsetX.toRoundedInt(), osInfoCenterOffsetY.toRoundedInt()) })
                 }
 
                 if(showOsContextMenu){
                     OsContextMenu(
-                        modifier = Modifier.offset { IntOffset(osContextMenuOffsetX.roundToInt(), osContextMenuOffsetY.roundToInt()) }
+                        modifier = Modifier.offset { IntOffset(osContextMenuOffsetX.toRoundedInt(), osContextMenuOffsetY.toRoundedInt()) }
                     ) {
                         showOsContextMenu = false
                         if(it == "Change Wallpaper"){
@@ -349,15 +351,14 @@ class Root {
                 if(showWallpaperPicker){
                     WallpaperPicker(
                         onDismissRequest = {showWallpaperPicker = false},
-                        modifier = Modifier.offset { IntOffset(1.percentOfParent(ParentConfig.WIDTH).roundToInt(),(70.percentOfParent(ParentConfig.HEIGHT)).roundToInt()) }
+                        modifier = Modifier.offset { IntOffset(1.percentOfParent(ParentConfig.WIDTH).toRoundedInt(),(70.percentOfParent(ParentConfig.HEIGHT)).toRoundedInt()) }
                     ) {
                         wallpaper = it
                         reloadWallpaper = !reloadWallpaper
                     }
                 }
-
-                IdleAppContiner(
-                    modifier = Modifier.offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
+                IdleAppContainer(
+                    modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 change.consume()
@@ -365,8 +366,19 @@ class Root {
                                 offsetY += dragAmount.y
                             }
                             detectTapGestures {  }
-                        }.align(Alignment.Center)
+                        }.align(appAlignment),
+                    onMaximize = {
+                        offsetX = 0f
+                        offsetY = 0f
+                        appAlignment = Alignment.Center
+                    },
+                    onMinimize = {
+                        offsetX = 0f
+                        offsetY = 0f
+                        appAlignment = Alignment.Center
+                    }
                 ) {  }
+
             }
             //Brightness overlay
             Column(modifier = Modifier.fillMaxSize().background(color = Color.Black.copy(alpha = contentProvider.brightness.value))){

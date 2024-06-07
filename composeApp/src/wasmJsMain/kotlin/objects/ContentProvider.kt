@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 
 class ContentProvider {
     val globalColor = mutableStateOf(Color(0xffffffff))
-    val globalTransparency = mutableFloatStateOf(0.6f)
+    val globalTransparency = mutableFloatStateOf(0.7f)
     val globalTextColor = mutableStateOf(Color(0xff000000))
     val activeDockItemIndicator = mutableStateOf(Color(0xff000000))
     val inactiveDockItemIndicator = mutableStateOf(Color(0xff706e6e))
