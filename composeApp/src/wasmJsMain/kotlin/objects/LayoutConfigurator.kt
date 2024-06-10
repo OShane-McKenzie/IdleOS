@@ -7,8 +7,8 @@ import percentOfParent
 
 class LayoutConfigurator {
 
-    val parentHeight = mutableIntStateOf(1)
-    val parentWidth = mutableIntStateOf(1)
+    val parentHeight = mutableIntStateOf(50)
+    val parentWidth = mutableIntStateOf(50)
     val parentSize = mutableIntStateOf((parentHeight.value*parentWidth.value))
 
     fun isPortraitLayout():Boolean{

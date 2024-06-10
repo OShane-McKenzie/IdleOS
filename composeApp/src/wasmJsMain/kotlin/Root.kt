@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import components.DockItem
 import components.IdleAppContainer
 
@@ -378,6 +379,7 @@ class Root {
                         appAlignment = Alignment.Center
                     }
                 ) {  }
+                
 
             }
             //Brightness overlay
