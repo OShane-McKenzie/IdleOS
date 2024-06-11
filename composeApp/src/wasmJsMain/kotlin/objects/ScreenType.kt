@@ -31,7 +31,7 @@ enum class ScreenType(val width: Int, val height: Int, val scaleFactor: Float) {
 
     companion object {
         fun fromDimensions(width: Int, height: Int): ScreenType {
-            return entries.find { it.width == width && it.height == height } ?: NEW_RESOLUTION
+            return entries.find { it.width == width && height <= it.height } ?: HD_1366
         }
     }
 }

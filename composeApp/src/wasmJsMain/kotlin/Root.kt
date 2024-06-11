@@ -40,6 +40,7 @@ import objects.ParentConfig
 import org.jetbrains.compose.resources.painterResource
 import osComponents.*
 import objects.LayoutValues
+import objects.ScreenType
 
 class Root {
 
@@ -177,7 +178,7 @@ class Root {
                                 ) {  offsetX, offsetY, id->
                                     middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
                                     Text(
-                                        contentProvider.clockString.value +"${layoutConfigurator.getScreenRatio()}",
+                                        contentProvider.clockString.value +" ${layoutConfigurator.parentWidth.value}, ${layoutConfigurator.parentHeight.value}",
                                         fontSize = (height*0.25).sp,
                                         color = contentProvider.globalTextColor.value
                                     )
