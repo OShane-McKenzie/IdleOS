@@ -8,17 +8,45 @@ import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import objects.LayoutValues
 import objects.ParentConfig
+import objects.ScreenType
 import kotlin.math.floor
 
+fun calculateScreenRatio(height: Int, width: Int): Float {
+    require(height > 0) { "Height must be a positive integer" }
+    require(width > 0) { "Width must be a positive integer" }
+
+    return height.toFloat() / width.toFloat()
+}
+
+fun sizeIfRatio(ratio:Float, initSize:Float):Float{
+    return when{
+        (ratio <= 1f && ratio > 0.7f) ->{
+            initSize
+        }
+        (ratio <= 0.7f && ratio > 0.6f) ->{
+            initSize
+        }
+        (ratio < 0.6f && ratio > 0.5f) ->{
+            (initSize*2)
+        }
+        (ratio > 1f && ratio < 2f) ->{
+            (initSize/1.5f)
+        }
+        (ratio >= 2f && ratio < 3f) ->{
+            (initSize/2f)
+        }
+        else -> {initSize}
+    }
+}
 
 fun Int.percentOfParent(config: ParentConfig):Float{
     return when(config){
         ParentConfig.WIDTH->{
-            ((this.toFloat())/100f)*layoutConfigurator.parentWidth.value
+            (((this.toFloat())/100f)*layoutConfigurator.parentWidth.value)
         }
 
         ParentConfig.HEIGHT ->{
-            ((this.toFloat())/100f)*layoutConfigurator.parentHeight.value
+            ((this.toFloat())/100f)*layoutConfigurator.parentHeight.value*ScreenType.fromDimensions(layoutConfigurator.parentWidth.value,layoutConfigurator.parentHeight.value).scaleFactor
         }
 
         ParentConfig.SIZE ->{
@@ -33,7 +61,7 @@ fun Float.percentOfParent(config: ParentConfig):Float{
         }
 
         ParentConfig.HEIGHT ->{
-            (this/100f)*layoutConfigurator.parentHeight.value
+            (this/100f)*layoutConfigurator.parentHeight.value*ScreenType.fromDimensions(layoutConfigurator.parentWidth.value,layoutConfigurator.parentHeight.value).scaleFactor
         }
 
         ParentConfig.SIZE ->{
@@ -49,7 +77,7 @@ fun Double.percentOfParent(config: ParentConfig):Float{
         }
 
         ParentConfig.HEIGHT ->{
-            ((this/100f)*layoutConfigurator.parentHeight.value).toFloat()
+            ((this/100f)*layoutConfigurator.parentHeight.value).toFloat()*ScreenType.fromDimensions(layoutConfigurator.parentWidth.value,layoutConfigurator.parentHeight.value).scaleFactor
         }
 
         ParentConfig.SIZE ->{
@@ -164,6 +192,8 @@ fun turnOnWidget(id:String = ""){
         }
     }
 }
+
+
 
 val richColors = listOf(
     Color(0xFFFF0000),

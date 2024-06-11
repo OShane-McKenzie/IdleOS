@@ -68,6 +68,7 @@ class Root {
         var startApp by remember {
             mutableStateOf(false)
         }
+
         LaunchedEffect(Unit){
             //required to avoid layout calculations NaN value bug
             delay(2000)
@@ -176,7 +177,7 @@ class Root {
                                 ) {  offsetX, offsetY, id->
                                     middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
                                     Text(
-                                        contentProvider.clockString.value,
+                                        contentProvider.clockString.value +"${layoutConfigurator.getScreenRatio()}",
                                         fontSize = (height*0.25).sp,
                                         color = contentProvider.globalTextColor.value
                                     )

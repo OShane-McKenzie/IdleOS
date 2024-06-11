@@ -68,7 +68,7 @@ fun OsContextMenu(
                         }
                     )
                     Divider()
-                    Text("Shutdown",
+                    Text("Properties",
                         color = contentProvider.globalTextColor.value,
                         modifier = Modifier.fillMaxWidth().background(
                             shape = RoundedCornerShape(13),

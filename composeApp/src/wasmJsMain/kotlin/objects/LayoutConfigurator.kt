@@ -2,6 +2,7 @@ package objects
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import calculateScreenRatio
 import percentOfParent
 
 
@@ -23,4 +24,7 @@ class LayoutConfigurator {
         return parentWidth.value == parentHeight.value
     }
 
+    fun getScreenRatio():Float{
+        return calculateScreenRatio(parentHeight.value, parentWidth.value)
+    }
 }
