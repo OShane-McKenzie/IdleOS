@@ -1,4 +1,4 @@
-
+package osComponents
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import components.SimpleAnimator
+import contentProvider
+import getDateTimeToString
 import kotlinx.coroutines.delay
 import kotlinx.datetime.*
 import objects.AnimationStyle

@@ -6,6 +6,7 @@ import jsFeatures.getNetworkInfo
 import jsFeatures.getRamInfo
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
+import objects.LayoutValues
 import objects.ParentConfig
 import kotlin.math.floor
 
@@ -126,6 +127,42 @@ fun Float.toRoundedInt(): Int {
 inline fun Unit.then(block: Unit.() -> Unit) {
     val result = this
     result.block()
+}
+
+fun turnOnWidget(id:String = ""){
+    when(id){
+        "infoCenter"->{
+            LayoutValues.showInfoCenter.value = !LayoutValues.showInfoCenter.value
+            LayoutValues.showControlCenter.value = false
+            LayoutValues.showCalendar.value = false
+            LayoutValues.showOsInfo.value = false
+        }
+        "controlCenter"->{
+            LayoutValues.showControlCenter.value = !LayoutValues.showControlCenter.value
+            LayoutValues.showInfoCenter.value = false
+            LayoutValues.showCalendar.value = false
+            LayoutValues.showOsInfo.value = false
+        }
+        "calendar"->{
+            LayoutValues.showCalendar.value = !LayoutValues.showCalendar.value
+            LayoutValues.showControlCenter.value = false
+            LayoutValues.showInfoCenter.value = false
+            LayoutValues.showOsInfo.value = false
+        }
+        "osInfo"->{
+            LayoutValues.showOsInfo.value = !LayoutValues.showOsInfo.value
+            LayoutValues.showCalendar.value = false
+            LayoutValues.showControlCenter.value = false
+            LayoutValues.showInfoCenter.value = false
+        }
+        "none"->{
+            LayoutValues.showCalendar.value = false
+            LayoutValues.showControlCenter.value = false
+            LayoutValues.showInfoCenter.value = false
+            LayoutValues.showOsInfo.value = false
+            LayoutValues.showOsContextMenu.value = false
+        }
+    }
 }
 
 val richColors = listOf(

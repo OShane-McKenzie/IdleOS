@@ -37,8 +37,8 @@ fun IdleAppContainer(
     content: @Composable () -> Unit = {}
 ) {
     var animate by remember { mutableStateOf(false) }
-    var windowHeight by remember { mutableStateOf(10f) }
-    var windowWidth by remember { mutableStateOf(10f) }
+    var windowHeight by remember { mutableStateOf(10.percentOfParent(ParentConfig.HEIGHT)) }
+    var windowWidth by remember { mutableStateOf(10.percentOfParent(ParentConfig.WIDTH)) }
     var isDisplayWindow by remember { mutableStateOf(displayWindow) }
 
     var callIsDisplayWindow by remember { mutableStateOf(false) }
@@ -47,12 +47,12 @@ fun IdleAppContainer(
 
     val animatedHeight by animateDpAsState(
         targetValue = windowHeight.dp,
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+        animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
     )
 
     val animatedWidth by animateDpAsState(
         targetValue = windowWidth.dp,
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+        animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
     )
 
     LaunchedEffect(Unit) {
@@ -65,7 +65,7 @@ fun IdleAppContainer(
         if(callIsDisplayWindow){
             windowWidth = 5.percentOfParent(ParentConfig.WIDTH)
             windowHeight = 5.percentOfParent(ParentConfig.HEIGHT)
-            delay(490)
+            delay(190)
             isDisplayWindow = false
         }
     }

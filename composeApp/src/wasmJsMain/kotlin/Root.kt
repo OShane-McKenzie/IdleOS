@@ -28,10 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import components.DockItem
 import components.IdleAppContainer
-
 import components.PanelWidget
 import components.SimpleAnimator
 import idleos.composeapp.generated.resources.*
@@ -41,7 +39,7 @@ import objects.AnimationStyle
 import objects.ParentConfig
 import org.jetbrains.compose.resources.painterResource
 import osComponents.*
-
+import objects.LayoutValues
 
 class Root {
 
@@ -55,58 +53,6 @@ class Root {
         var offsetX by remember { mutableStateOf(0f) }
         var offsetY by remember { mutableStateOf(0f) }
         var appAlignment by remember { mutableStateOf(Alignment.Center) }
-        var controlCenterOffsetY by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-
-        var osContextMenuOffsetX by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-        var osContextMenuOffsetY by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-
-        var calendarOffsetX by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-        var calendarOffsetY by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-
-        var infoCenterOffsetX by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-        var infoCenterOffsetY by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-
-        var osInfoCenterOffsetX by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-        var osInfoCenterOffsetY by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
-
-        var showControlCenter by rememberSaveable {
-            mutableStateOf(false)
-        }
-        var showOsInfo by rememberSaveable {
-            mutableStateOf(false)
-        }
-        var showInfoCenter by rememberSaveable {
-            mutableStateOf(false)
-        }
-        var showCalendar by rememberSaveable {
-            mutableStateOf(false)
-        }
-
-        var showWallpaperPicker by remember {
-            mutableStateOf(false)
-        }
-
-        var showOsContextMenu by remember {
-            mutableStateOf(false)
-        }
 
         var dockHeight by remember { mutableFloatStateOf(1.0f) }
         var panelHeight by remember { mutableFloatStateOf(1.0f) }
@@ -116,276 +62,283 @@ class Root {
             mutableStateOf(Res.drawable.one)
         }
 
-        fun turnOnWidget(id:String = ""){
-            when(id){
-                "infoCenter"->{
-                    showInfoCenter = !showInfoCenter
-                    showControlCenter = false
-                    showCalendar = false
-                    showOsInfo = false
-                }
-                "controlCenter"->{
-                    showControlCenter = !showControlCenter
-                    showInfoCenter = false
-                    showCalendar = false
-                    showOsInfo = false
-                }
-                "calendar"->{
-                    showCalendar = !showCalendar
-                    showControlCenter = false
-                    showInfoCenter = false
-                    showOsInfo = false
-                }
-                "osInfo"->{
-                    showOsInfo = !showOsInfo
-                    showCalendar = false
-                    showControlCenter = false
-                    showInfoCenter = false
-                }
-                "none"->{
-                    showCalendar = false
-                    showControlCenter = false
-                    showInfoCenter = false
-                    showOsInfo = false
-                    showOsContextMenu = false
-                }
-            }
-        }
         var reloadWallpaper by remember {
             mutableStateOf(false)
         }
-
-        Box(
-            modifier = Modifier.fillMaxSize().onGloballyPositioned {
-                layoutConfigurator.parentWidth.value = it.size.width
-                layoutConfigurator.parentHeight.value = it.size.height
-                layoutConfigurator.parentSize.value = (it.size.width * it.size.height)
-            }
-        ){
-            if(reloadWallpaper){
-                SimpleAnimator(style = AnimationStyle.SCALE_IN_CENTER) {
-                    Image(
-                        painter = painterResource(wallpaper),
-                        contentDescription = "Wallpaper",
-                        contentScale = ContentScale.FillBounds,
-                        modifier = Modifier
-                            .height(layoutConfigurator.parentHeight.value.dp)
-                            .width(layoutConfigurator.parentWidth.value.dp)
-                    )
-                }
-
-            }else{
-                SimpleAnimator(style = AnimationStyle.SCALE_IN_CENTER) {
-                    Image(
-                        painter = painterResource(wallpaper),
-                        contentDescription = "Wallpaper",
-                        contentScale = ContentScale.FillBounds,
-                        modifier = Modifier
-                            .height(layoutConfigurator.parentHeight.value.dp)
-                            .width(layoutConfigurator.parentWidth.value.dp)
-                    )
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null
-                    ) {
-                        turnOnWidget("none")
+        var startApp by remember {
+            mutableStateOf(false)
+        }
+        LaunchedEffect(Unit){
+            //required to avoid layout calculations NaN value bug
+            delay(2000)
+            startApp = true
+        }
+        Box(modifier = Modifier.fillMaxSize()){
+            if(startApp){
+                Box(
+                    modifier = Modifier.fillMaxSize().onGloballyPositioned {
+                        layoutConfigurator.parentWidth.value = it.size.width
+                        layoutConfigurator.parentHeight.value = it.size.height
+                        layoutConfigurator.parentSize.value = (it.size.width * it.size.height)
                     }
-                    .pointerInput(Unit) {
-                        awaitPointerEventScope {
-                            while (true) {
-                                val event = awaitPointerEvent()
-                                if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
-                                    rightClickOffset = event.changes.first().position
-                                    CoroutineScope(Dispatchers.Default).launch{
-                                        withContext(Dispatchers.Main){
-                                            showOsContextMenu = false
-                                        }
-                                        delay(20)
-                                        withContext(Dispatchers.Main){
-                                            osContextMenuOffsetX = rightClickOffset!!.x
-                                            osContextMenuOffsetY = rightClickOffset!!.y
-                                            showOsContextMenu = true
+                ){
+                    if(reloadWallpaper){
+                        SimpleAnimator(style = AnimationStyle.SCALE_IN_CENTER) {
+                            Image(
+                                painter = painterResource(wallpaper),
+                                contentDescription = "Wallpaper",
+                                contentScale = ContentScale.FillBounds,
+                                modifier = Modifier
+                                    .height(layoutConfigurator.parentHeight.value.dp)
+                                    .width(layoutConfigurator.parentWidth.value.dp)
+                            )
+                        }
+
+                    }else{
+                        SimpleAnimator(style = AnimationStyle.SCALE_IN_CENTER) {
+                            Image(
+                                painter = painterResource(wallpaper),
+                                contentDescription = "Wallpaper",
+                                contentScale = ContentScale.FillBounds,
+                                modifier = Modifier
+                                    .height(layoutConfigurator.parentHeight.value.dp)
+                                    .width(layoutConfigurator.parentWidth.value.dp)
+                            )
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null
+                            ) {
+                                turnOnWidget("none")
+                            }
+                            .pointerInput(Unit) {
+                                awaitPointerEventScope {
+                                    while (true) {
+                                        val event = awaitPointerEvent()
+                                        if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
+                                            rightClickOffset = event.changes.first().position
+                                            CoroutineScope(Dispatchers.Default).launch{
+                                                withContext(Dispatchers.Main){
+                                                    LayoutValues.showOsContextMenu.value = false
+                                                }
+                                                delay(20)
+                                                withContext(Dispatchers.Main){
+                                                    LayoutValues.osContextMenuOffsetX.value = rightClickOffset!!.x
+                                                    LayoutValues.osContextMenuOffsetY.value = rightClickOffset!!.y
+                                                    LayoutValues.showOsContextMenu.value = true
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-            ){
-                Panel(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    start = {width, height->
-                        panelHeight = height
-                        var startWidgetOffsetX by remember { mutableFloatStateOf(1.0f) }
-                        var startWidgetOffsetY by remember { mutableFloatStateOf(1.0f) }
-                        var widgetId by remember { mutableStateOf("") }
-                        PanelWidget(
-                            onClick = {
-                                osInfoCenterOffsetX = (startWidgetOffsetX-8)
-                                osInfoCenterOffsetY = (startWidgetOffsetY *(height*0.18f))
-                                turnOnWidget(widgetId)
-                            },
-                            id = "osInfo"
-                        ) { offsetX, offsetY, id->
-                            startWidgetOffsetX = offsetX; startWidgetOffsetY = offsetY; widgetId = id
-                            Text(
-                                appName,
-                                fontFamily = FontFamily.Cursive,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = (height*0.3).sp,
-                                color = contentProvider.globalTextColor.value
-                            )
-                        }
-                    },
-                    middle = {width, height->
-                        var middleWidgetOffsetX by remember { mutableFloatStateOf(1.0f) }
-                        var middleWidgetOffsetY by remember { mutableFloatStateOf(1.0f) }
-                        var widgetId by remember { mutableStateOf("") }
-                        PanelWidget(
-                            onClick = {
-                                calendarOffsetX = (middleWidgetOffsetX-((width*4.5f)))
-                                calendarOffsetY = (middleWidgetOffsetY *(height*0.18f))
-                                turnOnWidget(widgetId)
-                            },
-                            id = "calendar"
-                        ) {  offsetX, offsetY, id->
-                            middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
-                            Text(
-                                contentProvider.clockString.value,
-                                fontSize = (height*0.25).sp,
-                                color = contentProvider.globalTextColor.value
-                            )
-                        }
-                    },
-                    end = {
-                        width, height->
-                        PanelWidget(isWidgetClickable = false, id = "controlCenter") { offsetX, offsetY, id->
-                            val calculatedWidth = (width*0.03f)
-                            IconButton(
-                                onClick = {
-                                    controlCenterOffsetX = (offsetX-(calculatedWidth*16.3f))
-                                    controlCenterOffsetY = (offsetY*(height*0.18f))
-                                    turnOnWidget(id)
-                                },
-                                modifier = Modifier
-                                    .height(height.dp)
-                                    .width(calculatedWidth.dp)
-                            ){
-                                Icon(
-                                    modifier = Modifier.fillMaxSize(),
-                                    imageVector = Icons.Rounded.Settings,
-                                    contentDescription = "Control Center",
-                                    tint = contentProvider.globalTextColor.value,
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.width(5.dp))
-                        PanelWidget(isWidgetClickable = false, id = "infoCenter") { offsetX, offsetY, id->
-                            val calculatedWidth = (width*0.03f)
-                            IconButton(
-                                onClick = {
-                                    infoCenterOffsetX = (offsetX-(calculatedWidth*19.5f))
-                                    infoCenterOffsetY = (offsetY*(height*0.18f))
-                                    turnOnWidget(id)
-                                },
-                                modifier = Modifier
-                                    .height(height.dp)
-                                    .width(calculatedWidth.dp)
-                            ){
-                                Icon(
-                                    modifier = Modifier.fillMaxSize(),
-                                    imageVector = Icons.Rounded.Menu,
-                                    contentDescription = "Menu",
-                                    tint = contentProvider.globalTextColor.value,
-                                )
-                            }
-                        }
-                    }
-                )
-                Dock(
-                    modifier = Modifier.align(Alignment.BottomCenter)
-                ) {
-                    width, height->
-                    dockHeight = height
-                    DockItem(
-                        height = (height*0.7f),
-                        width = (width*0.45f),
-                        id = "Launcher"
                     ){
-
-                    }
-                }
-                if(showCalendar){
-                    IdleCalendar(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .height(43.percentOfParent(ParentConfig.HEIGHT).dp)
-                            .width(30.percentOfParent(ParentConfig.WIDTH).dp)
-                            .offset { IntOffset(calendarOffsetX.toRoundedInt(), calendarOffsetY.toRoundedInt()) }
-                    )
-                }
-                if(showControlCenter){
-                    ControlCenter(modifier = Modifier.offset { IntOffset(controlCenterOffsetX.toRoundedInt(), controlCenterOffsetY.toRoundedInt()) })
-                }
-                if(showInfoCenter){
-                    InfoCenter(modifier = Modifier.offset { IntOffset(infoCenterOffsetX.toRoundedInt(), infoCenterOffsetY.toRoundedInt()) })
-                }
-                if(showOsInfo){
-                    OsInfo(modifier = Modifier.offset { IntOffset(osInfoCenterOffsetX.toRoundedInt(), osInfoCenterOffsetY.toRoundedInt()) })
-                }
-
-                if(showOsContextMenu){
-                    OsContextMenu(
-                        modifier = Modifier.offset { IntOffset(osContextMenuOffsetX.toRoundedInt(), osContextMenuOffsetY.toRoundedInt()) }
-                    ) {
-                        showOsContextMenu = false
-                        if(it == "Change Wallpaper"){
-                            showWallpaperPicker = true
-                        }
-                    }
-                }
-                if(showWallpaperPicker){
-                    WallpaperPicker(
-                        onDismissRequest = {showWallpaperPicker = false},
-                        modifier = Modifier.offset { IntOffset(1.percentOfParent(ParentConfig.WIDTH).toRoundedInt(),(70.percentOfParent(ParentConfig.HEIGHT)).toRoundedInt()) }
-                    ) {
-                        wallpaper = it
-                        reloadWallpaper = !reloadWallpaper
-                    }
-                }
-                IdleAppContainer(
-                    modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
-                        .pointerInput(Unit) {
-                            detectDragGestures { change, dragAmount ->
-                                change.consume()
-                                offsetX += dragAmount.x
-                                offsetY += dragAmount.y
+                        Panel(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            start = {width, height->
+                                panelHeight = height
+                                var startWidgetOffsetX by remember { mutableFloatStateOf(1.0f) }
+                                var startWidgetOffsetY by remember { mutableFloatStateOf(1.0f) }
+                                var widgetId by remember { mutableStateOf("") }
+                                PanelWidget(
+                                    onClick = {
+                                        LayoutValues.osInfoCenterOffsetX.value = (startWidgetOffsetX-8)
+                                        LayoutValues.osInfoCenterOffsetY.value = (startWidgetOffsetY *(height*0.18f))
+                                        turnOnWidget(widgetId)
+                                    },
+                                    id = "osInfo"
+                                ) { offsetX, offsetY, id->
+                                    startWidgetOffsetX = offsetX; startWidgetOffsetY = offsetY; widgetId = id
+                                    Text(
+                                        appName,
+                                        fontFamily = FontFamily.Cursive,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = (height*0.3).sp,
+                                        color = contentProvider.globalTextColor.value
+                                    )
+                                }
+                            },
+                            middle = {width, height->
+                                var middleWidgetOffsetX by remember { mutableFloatStateOf(1.0f) }
+                                var middleWidgetOffsetY by remember { mutableFloatStateOf(1.0f) }
+                                var widgetId by remember { mutableStateOf("") }
+                                PanelWidget(
+                                    onClick = {
+                                        LayoutValues.calendarOffsetX.value = (middleWidgetOffsetX-((width*4.5f)))
+                                        LayoutValues.calendarOffsetY.value = (middleWidgetOffsetY *(height*0.18f))
+                                        turnOnWidget(widgetId)
+                                    },
+                                    id = "calendar"
+                                ) {  offsetX, offsetY, id->
+                                    middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
+                                    Text(
+                                        contentProvider.clockString.value,
+                                        fontSize = (height*0.25).sp,
+                                        color = contentProvider.globalTextColor.value
+                                    )
+                                }
+                            },
+                            end = {
+                                    width, height->
+                                PanelWidget(isWidgetClickable = false, id = "controlCenter") { offsetX, offsetY, id->
+                                    val calculatedWidth = (width*0.03f)
+                                    IconButton(
+                                        onClick = {
+                                            controlCenterOffsetX = (offsetX-(calculatedWidth*16.3f))
+                                            LayoutValues.controlCenterOffsetY.value = (offsetY*(height*0.18f))
+                                            turnOnWidget(id)
+                                        },
+                                        modifier = Modifier
+                                            .height(height.dp)
+                                            .width(calculatedWidth.dp)
+                                    ){
+                                        Icon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            imageVector = Icons.Rounded.Settings,
+                                            contentDescription = "Control Center",
+                                            tint = contentProvider.globalTextColor.value,
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.width(5.dp))
+                                PanelWidget(isWidgetClickable = false, id = "infoCenter") { offsetX, offsetY, id->
+                                    val calculatedWidth = (width*0.03f)
+                                    IconButton(
+                                        onClick = {
+                                            LayoutValues.infoCenterOffsetX.value = (offsetX-(calculatedWidth*19.5f))
+                                            LayoutValues.infoCenterOffsetY.value = (offsetY*(height*0.18f))
+                                            turnOnWidget(id)
+                                        },
+                                        modifier = Modifier
+                                            .height(height.dp)
+                                            .width(calculatedWidth.dp)
+                                    ){
+                                        Icon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            imageVector = Icons.Rounded.Menu,
+                                            contentDescription = "Menu",
+                                            tint = contentProvider.globalTextColor.value,
+                                        )
+                                    }
+                                }
                             }
-                            detectTapGestures {  }
-                        }.align(appAlignment),
-                    onMaximize = {
-                        offsetX = 0f
-                        offsetY = 0f
-                        appAlignment = Alignment.Center
-                    },
-                    onMinimize = {
-                        offsetX = 0f
-                        offsetY = 0f
-                        appAlignment = Alignment.Center
+                        )
+                        Dock(
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        ) {
+                                width, height->
+                            dockHeight = height
+                            DockItem(
+                                height = (height*0.7f),
+                                width = (width*0.45f),
+                                id = "Launcher"
+                            ){
+
+                            }
+                        }
+                        if(LayoutValues.showCalendar.value){
+                            IdleCalendar(
+                                modifier = Modifier
+                                    .align(Alignment.TopCenter)
+                                    .height(43.percentOfParent(ParentConfig.HEIGHT).dp)
+                                    .width(30.percentOfParent(ParentConfig.WIDTH).dp)
+                                    .offset {
+                                        IntOffset(LayoutValues.calendarOffsetX.value.toRoundedInt(),
+                                        LayoutValues.calendarOffsetY.value.toRoundedInt())
+                                    }
+                            )
+                        }
+                        if(LayoutValues.showControlCenter.value){
+                            ControlCenter(
+                                modifier = Modifier.offset {
+                                IntOffset(controlCenterOffsetX.toRoundedInt(),
+                                LayoutValues.controlCenterOffsetY.value.toRoundedInt())
+                                }
+                            )
+                        }
+                        if(LayoutValues.showInfoCenter.value){
+                            InfoCenter(modifier = Modifier.offset {
+                                IntOffset(LayoutValues.infoCenterOffsetX.value.toRoundedInt(),
+                                LayoutValues.infoCenterOffsetY.value.toRoundedInt())
+                                }
+                            )
+                        }
+                        if(LayoutValues.showOsInfo.value){
+                            OsInfo(modifier = Modifier.offset {
+                                IntOffset(LayoutValues.osInfoCenterOffsetX.value.toRoundedInt(),
+                                LayoutValues.osInfoCenterOffsetY.value.toRoundedInt())
+                                }
+                            )
+                        }
+
+                        if(LayoutValues.showOsContextMenu.value){
+                            OsContextMenu(
+                                modifier = Modifier.offset {
+                                    IntOffset(LayoutValues.osContextMenuOffsetX.value.toRoundedInt(),
+                                    LayoutValues.osContextMenuOffsetY.value.toRoundedInt())
+                                }
+                            ) {
+                                LayoutValues.showOsContextMenu.value = false
+                                if(it == "Change Wallpaper"){
+                                    LayoutValues.showWallpaperPicker.value = true
+                                }
+                            }
+                        }
+                        if(LayoutValues.showWallpaperPicker.value){
+                            WallpaperPicker(
+                                onDismissRequest = {LayoutValues.showWallpaperPicker.value = false},
+                                modifier = Modifier.offset {
+                                    IntOffset(1.percentOfParent(ParentConfig.WIDTH).toRoundedInt(),
+                                    (70.percentOfParent(ParentConfig.HEIGHT)).toRoundedInt())
+                                }
+                            ) {
+                                wallpaper = it
+                                reloadWallpaper = !reloadWallpaper
+                            }
+                        }
+                        IdleAppContainer(
+                            modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
+                                .pointerInput(Unit) {
+                                    detectDragGestures { change, dragAmount ->
+                                        change.consume()
+                                        offsetX += dragAmount.x
+                                        offsetY += dragAmount.y
+                                    }
+                                    detectTapGestures {  }
+                                }.align(appAlignment),
+                            onMaximize = {
+                                offsetX = 0f
+                                offsetY = 0f
+                                appAlignment = Alignment.Center
+                            },
+                            onMinimize = {
+                                offsetX = 0f
+                                offsetY = 0f
+                                appAlignment = Alignment.Center
+                            }
+                        ) {  }
+
                     }
-                ) {  }
-                
+                    //Brightness overlay
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Color.Black.copy(alpha = contentProvider.brightness.value)
+                        )
+                    ){
+                    }
 
+                }
+            }else{
+                Text(
+                    "Loading please wait...",
+                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 32.sp, fontWeight = FontWeight.Bold
+                )
             }
-            //Brightness overlay
-            Column(modifier = Modifier.fillMaxSize().background(color = Color.Black.copy(alpha = contentProvider.brightness.value))){
-            }
-
         }
     }
 }
