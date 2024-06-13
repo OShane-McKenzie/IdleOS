@@ -9,10 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
+import layoutConfigurator
 import objects.ParentConfig.*
 import percentOfParent
+import toInt
 
 /**
  * A composable function that represents a dock.
@@ -25,17 +28,18 @@ import percentOfParent
  */
 @Composable
 fun Dock(modifier: Modifier = Modifier, items: @Composable (Float,Float)-> Unit={width, height->}){
+    val density = LocalDensity.current
     val scrollState = rememberScrollState()
     var width by remember {
-        mutableFloatStateOf(98.percentOfParent(WIDTH))
+        mutableFloatStateOf(layoutConfigurator.parentWidth.value * 0.98f)
     }
     var height by remember {
-        mutableFloatStateOf(3.percentOfParent(HEIGHT))
+        mutableFloatStateOf(layoutConfigurator.parentHeight.value * 0.03f)
     }
     Column(
         modifier = modifier
-            .width(contentProvider.dockWidth.value.percentOfParent(WIDTH).dp)
-            .height(contentProvider.dockHeight.value.percentOfParent(HEIGHT).dp)
+            .width(contentProvider.dockWidth.value.percentOfParent(WIDTH, density))
+            .height(contentProvider.dockHeight.value.percentOfParent(HEIGHT, density))
 
             .padding(top = 8.dp, bottom = 8.dp),
         verticalArrangement = Arrangement.Center,

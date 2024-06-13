@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
 import objects.ParentConfig.*
@@ -29,6 +30,7 @@ fun Panel(
     middle: @Composable (Float,Float)->Unit={width, height->},
     end: @Composable (Float,Float)->Unit={width, height->}
 ){
+    val density = LocalDensity.current
     var panelWidth by remember{
         mutableFloatStateOf(1.0f)
     }
@@ -38,8 +40,8 @@ fun Panel(
 
     Row(
         modifier = modifier
-            .height(contentProvider.panelHeight.value.percentOfParent(HEIGHT).dp)
-            .width(contentProvider.panelWidth.value.percentOfParent(WIDTH).dp)
+            .height(contentProvider.panelHeight.value.percentOfParent(HEIGHT, density))
+            .width(contentProvider.panelWidth.value.percentOfParent(WIDTH, density))
             .padding(3.dp)
             .background(color = Color.Black.copy(alpha = 0.0f))
             .onGloballyPositioned {

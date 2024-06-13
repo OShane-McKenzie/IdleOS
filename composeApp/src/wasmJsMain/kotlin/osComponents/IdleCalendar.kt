@@ -10,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -20,7 +22,9 @@ import getDateTimeToString
 import kotlinx.coroutines.delay
 import kotlinx.datetime.*
 import objects.AnimationStyle
+import objects.LayoutValues
 import objects.Sizes
+import toFloat
 
 /**
  * A composable function that represents an idle calendar.
@@ -31,6 +35,7 @@ import objects.Sizes
  */
 @Composable
 fun IdleCalendar(modifier: Modifier = Modifier) {
+    val density = LocalDensity.current
     val currentMoment = Clock.System.now()
     val currentDateTime = currentMoment.toLocalDateTime(TimeZone.currentSystemDefault())
     val currentDate = currentDateTime.date
@@ -52,7 +57,11 @@ fun IdleCalendar(modifier: Modifier = Modifier) {
             SimpleAnimator(
                 style = AnimationStyle.SCALE_IN_CENTER
             ) {
-                Column(modifier = Modifier.wrapContentSize()) {
+                Column(
+                    modifier = Modifier.wrapContentSize().onGloballyPositioned {
+                        LayoutValues.calendarWith.value = with(density){it.size.width.toDp()}.toFloat(density)
+                    }
+                ) {
                     MonthHeader(month = month, year = year)
                     Spacer(modifier = Modifier.height(Sizes.eight.dp))
                     DaysOfWeekHeader()

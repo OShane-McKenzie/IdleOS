@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import components.SimpleAnimator
 import contentProvider
@@ -22,6 +23,7 @@ fun OsContextMenu(
     modifier: Modifier = Modifier,
     onDismissRequest: (String) -> Unit={}
 ){
+    val density = LocalDensity.current
     var animate by remember {
         mutableStateOf(false)
     }
@@ -32,8 +34,8 @@ fun OsContextMenu(
     Box(
         modifier =
         modifier
-            .width(8.percentOfParent(ParentConfig.WIDTH).dp)
-            .height(10.percentOfParent(ParentConfig.HEIGHT).dp)
+            .width(16.percentOfParent(ParentConfig.WIDTH, density))
+            .height(20.percentOfParent(ParentConfig.HEIGHT, density))
     ){
         if(animate){
             SimpleAnimator(AnimationStyle.SCALE_IN_CENTER){

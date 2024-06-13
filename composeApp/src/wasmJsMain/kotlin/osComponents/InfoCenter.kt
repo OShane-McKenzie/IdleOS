@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import components.SimpleAnimator
@@ -33,6 +34,7 @@ import percentOfParent
  */
 @Composable
 fun InfoCenter(modifier: Modifier = Modifier){
+    val density = LocalDensity.current
     var animate by remember {
         mutableStateOf(false)
     }
@@ -47,8 +49,8 @@ fun InfoCenter(modifier: Modifier = Modifier){
         networkFeatures = contentProvider.netUsageString.value.split("|")
     }
     Box(modifier = modifier
-        .width((13.percentOfParent(ParentConfig.WIDTH)).dp)
-        .height(42.percentOfParent(ParentConfig.HEIGHT).dp)
+        .width(26.percentOfParent(ParentConfig.WIDTH, density))
+        .height(84.percentOfParent(ParentConfig.HEIGHT, density))
         .background(
             color = contentProvider.globalColor.value.copy(alpha = 0.0f),
             shape = RoundedCornerShape(percent = Sizes.eight)

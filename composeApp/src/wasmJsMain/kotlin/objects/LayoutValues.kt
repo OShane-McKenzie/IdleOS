@@ -7,15 +7,19 @@ object LayoutValues {
 
     val osContextMenuOffsetX = mutableStateOf(1.0f)
     val osContextMenuOffsetY = mutableStateOf(1.0f)
+    val osContextMenuWidth = mutableStateOf(1.0f)
 
     val calendarOffsetX = mutableStateOf(1.0f)
     val calendarOffsetY = mutableStateOf(1.0f)
+    val calendarWith = mutableStateOf(1.0f)
 
     val infoCenterOffsetX = mutableStateOf(1.0f)
     val infoCenterOffsetY = mutableStateOf(1.0f)
+    val infoCenterWidth = mutableStateOf(1.0f)
 
     val osInfoCenterOffsetX = mutableStateOf(1.0f)
     val osInfoCenterOffsetY = mutableStateOf(1.0f)
+    val osInfoCenter = mutableStateOf(1.0f)
 
     val showControlCenter = mutableStateOf(false)
     val showOsInfo = mutableStateOf(false)

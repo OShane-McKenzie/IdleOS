@@ -23,6 +23,7 @@ import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -46,6 +47,8 @@ class Root {
 
     @Composable
     fun Parent(){
+        val density = LocalDensity.current
+
         val interactionSource = remember { MutableInteractionSource() }
         val indication = LocalIndication.current
         var controlCenterOffsetX by rememberSaveable {
@@ -148,8 +151,8 @@ class Root {
                                 var widgetId by remember { mutableStateOf("") }
                                 PanelWidget(
                                     onClick = {
-                                        LayoutValues.osInfoCenterOffsetX.value = (startWidgetOffsetX-8)
-                                        LayoutValues.osInfoCenterOffsetY.value = (startWidgetOffsetY *(height*0.18f))
+                                        LayoutValues.osInfoCenterOffsetX.value = (1.percentOfParent(ParentConfig.WIDTH,density).toFloat(density))
+                                        LayoutValues.osInfoCenterOffsetY.value = ((contentProvider.panelHeight.value+1).percentOfParent(ParentConfig.HEIGHT, density).toFloat(density))
                                         turnOnWidget(widgetId)
                                     },
                                     id = "osInfo"
@@ -170,15 +173,15 @@ class Root {
                                 var widgetId by remember { mutableStateOf("") }
                                 PanelWidget(
                                     onClick = {
-                                        LayoutValues.calendarOffsetX.value = (middleWidgetOffsetX-((width*4.5f)))
-                                        LayoutValues.calendarOffsetY.value = (middleWidgetOffsetY *(height*0.18f))
+                                        LayoutValues.calendarOffsetX.value = (0.percentOfParent(ParentConfig.WIDTH, density).toFloat(density))    //(middleWidgetOffsetX-((width*4.5f)))
+                                        LayoutValues.calendarOffsetY.value = ((contentProvider.panelHeight.value+1).percentOfParent(ParentConfig.HEIGHT, density).toFloat(density))
                                         turnOnWidget(widgetId)
                                     },
                                     id = "calendar"
                                 ) {  offsetX, offsetY, id->
                                     middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
                                     Text(
-                                        contentProvider.clockString.value +" ${layoutConfigurator.parentWidth.value}, ${layoutConfigurator.parentHeight.value}",
+                                        contentProvider.clockString.value +" ${100.percentOfParent(ParentConfig.WIDTH, density).toFloat(density)}",
                                         fontSize = (height*0.25).sp,
                                         color = contentProvider.globalTextColor.value
                                     )
@@ -190,8 +193,8 @@ class Root {
                                     val calculatedWidth = (width*0.03f)
                                     IconButton(
                                         onClick = {
-                                            controlCenterOffsetX = (offsetX-(calculatedWidth*16.3f))
-                                            LayoutValues.controlCenterOffsetY.value = (offsetY*(height*0.18f))
+                                            controlCenterOffsetX = 10.toFloat()
+                                            LayoutValues.controlCenterOffsetY.value = 20f
                                             turnOnWidget(id)
                                         },
                                         modifier = Modifier
@@ -246,8 +249,8 @@ class Root {
                             IdleCalendar(
                                 modifier = Modifier
                                     .align(Alignment.TopCenter)
-                                    .height(43.percentOfParent(ParentConfig.HEIGHT).dp)
-                                    .width(30.percentOfParent(ParentConfig.WIDTH).dp)
+                                    .height(86.percentOfParent(ParentConfig.HEIGHT,density))
+                                    .width(60.percentOfParent(ParentConfig.WIDTH,density))
                                     .offset {
                                         IntOffset(LayoutValues.calendarOffsetX.value.toRoundedInt(),
                                         LayoutValues.calendarOffsetY.value.toRoundedInt())
@@ -294,8 +297,7 @@ class Root {
                             WallpaperPicker(
                                 onDismissRequest = {LayoutValues.showWallpaperPicker.value = false},
                                 modifier = Modifier.offset {
-                                    IntOffset(1.percentOfParent(ParentConfig.WIDTH).toRoundedInt(),
-                                    (70.percentOfParent(ParentConfig.HEIGHT)).toRoundedInt())
+                                    IntOffset(1.percentOfParent(ParentConfig.WIDTH,density).toInt(density), (70.percentOfParent(ParentConfig.HEIGHT,density).toInt(density)))
                                 }
                             ) {
                                 wallpaper = it

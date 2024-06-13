@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,7 @@ import setDefaultColorTheme
 
 @Composable
 fun ControlCenter(modifier: Modifier = Modifier){
+    val density = LocalDensity.current
     var animate by remember {
         mutableStateOf(false)
     }
@@ -45,8 +47,8 @@ fun ControlCenter(modifier: Modifier = Modifier){
     }
     Box(
         modifier = modifier
-            .width((13.percentOfParent(ParentConfig.WIDTH)).dp)
-            .height(21.percentOfParent(ParentConfig.HEIGHT).dp)
+            .width((26.percentOfParent(ParentConfig.WIDTH, density = density)))
+            .height(42.percentOfParent(ParentConfig.HEIGHT, density))
             .background(
             color = contentProvider.globalColor.value.copy(alpha = 0.0f),
             shape = RoundedCornerShape(Sizes.eight)

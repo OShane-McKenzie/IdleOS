@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
 import idleos.composeapp.generated.resources.Res
@@ -20,6 +21,7 @@ import idleos.composeapp.generated.resources.close
 import idleos.composeapp.generated.resources.max
 import idleos.composeapp.generated.resources.min
 import kotlinx.coroutines.delay
+import layoutConfigurator
 import objects.AnimationStyle
 import objects.ParentConfig
 import objects.Sizes
@@ -36,9 +38,10 @@ fun IdleAppContainer(
     onCloseRequest: () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
+    val density = LocalDensity.current
     var animate by remember { mutableStateOf(false) }
-    var windowHeight by remember { mutableStateOf(10.percentOfParent(ParentConfig.HEIGHT)) }
-    var windowWidth by remember { mutableStateOf(10.percentOfParent(ParentConfig.WIDTH)) }
+    var windowHeight by remember { mutableStateOf(10.percentOfParent(ParentConfig.HEIGHT, density)) }
+    var windowWidth by remember { mutableStateOf(10.percentOfParent(ParentConfig.WIDTH, density)) }
     var isDisplayWindow by remember { mutableStateOf(displayWindow) }
 
     var callIsDisplayWindow by remember { mutableStateOf(false) }
@@ -46,25 +49,25 @@ fun IdleAppContainer(
     var transparency by remember { mutableStateOf(contentProvider.globalTransparency.value) }
 
     val animatedHeight by animateDpAsState(
-        targetValue = windowHeight.dp,
+        targetValue = windowHeight,
         animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
     )
 
     val animatedWidth by animateDpAsState(
-        targetValue = windowWidth.dp,
+        targetValue = windowWidth,
         animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
     )
 
     LaunchedEffect(Unit) {
         delay(10)
-        windowHeight = 40.percentOfParent(ParentConfig.HEIGHT)
-        windowWidth = 35.percentOfParent(ParentConfig.WIDTH)
+        windowHeight =  50.percentOfParent(ParentConfig.HEIGHT, density)
+        windowWidth =  55.percentOfParent(ParentConfig.WIDTH, density)
         animate = true
     }
     LaunchedEffect(callIsDisplayWindow){
         if(callIsDisplayWindow){
-            windowWidth = 5.percentOfParent(ParentConfig.WIDTH)
-            windowHeight = 5.percentOfParent(ParentConfig.HEIGHT)
+            windowWidth = 5.percentOfParent(ParentConfig.WIDTH, density)
+            windowHeight = 5.percentOfParent(ParentConfig.HEIGHT, density)
             delay(190)
             isDisplayWindow = false
         }
@@ -115,8 +118,8 @@ fun IdleAppContainer(
                             ) {
                                 onMinimize.invoke()
                                 transparency = contentProvider.globalTransparency.value
-                                windowHeight = 40.percentOfParent(ParentConfig.HEIGHT)
-                                windowWidth = 35.percentOfParent(ParentConfig.WIDTH)
+                                windowHeight = 30.percentOfParent(ParentConfig.HEIGHT, density)
+                                windowWidth = 35.percentOfParent(ParentConfig.WIDTH, density)
                             }
                             ImageButton(
                                 wallpaper = Res.drawable.max,
@@ -128,8 +131,8 @@ fun IdleAppContainer(
                             ) {
                                 onMaximize.invoke()
                                 transparency = 1.0f
-                                windowHeight = 100.percentOfParent(ParentConfig.HEIGHT)
-                                windowWidth = 100.percentOfParent(ParentConfig.WIDTH)
+                                windowHeight = 100.percentOfParent(ParentConfig.HEIGHT, density)
+                                windowWidth = 100.percentOfParent(ParentConfig.WIDTH, density)
                             }
                             ImageButton(
                                 wallpaper = Res.drawable.close,
