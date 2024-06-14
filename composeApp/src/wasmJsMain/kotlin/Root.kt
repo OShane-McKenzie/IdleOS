@@ -251,8 +251,10 @@ class Root {
                             IdleCalendar(
                                 modifier = Modifier
                                     .align(Alignment.TopCenter)
-                                    .height(86.percentOfParent(ParentConfig.HEIGHT,density))
-                                    .width(60.percentOfParent(ParentConfig.WIDTH,density))
+                                    .fillMaxWidth(0.6f)
+                                    .fillMaxHeight(0.86f)
+                                    //.height(86.percentOfParent(ParentConfig.HEIGHT,density))
+                                    //.width(60.percentOfParent(ParentConfig.WIDTH,density))
                                     .offset {
                                         IntOffset(LayoutValues.calendarOffsetX.value.toRoundedInt(),
                                         LayoutValues.calendarOffsetY.value.toRoundedInt())
