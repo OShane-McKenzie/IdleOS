@@ -143,7 +143,9 @@ class Root {
                             }
                     ){
                         Panel(
-                            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().fillMaxHeight(0.05f),
+                            modifier = Modifier.align(Alignment.TopCenter)
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.05f),
                             start = {width, height->
                                 panelHeight = height
                                 var startWidgetOffsetX by remember { mutableFloatStateOf(1.0f) }
