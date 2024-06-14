@@ -12,6 +12,7 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import components.ImageButton
@@ -23,6 +24,7 @@ import objects.AnimationStyle
 import objects.ParentConfig
 import org.jetbrains.compose.resources.DrawableResource
 import percentOfParent
+import toInt
 import wallPapers
 
 @Composable
@@ -31,6 +33,7 @@ fun WallpaperPicker(modifier: Modifier = Modifier, onDismissRequest:()->Unit={},
     var animate by remember {
         mutableStateOf(false)
     }
+
     LaunchedEffect(Unit){
         delay(10)
         animate = true
@@ -38,7 +41,7 @@ fun WallpaperPicker(modifier: Modifier = Modifier, onDismissRequest:()->Unit={},
     val scrollState = rememberScrollState()
     Box(
         modifier =
-        modifier.fillMaxWidth(0.98f).height(20.percentOfParent(ParentConfig.HEIGHT, density))
+        modifier
     ){
         if(animate){
             SimpleAnimator(AnimationStyle.UP){
@@ -63,6 +66,8 @@ fun WallpaperPicker(modifier: Modifier = Modifier, onDismissRequest:()->Unit={},
                                 wallpaper = it, modifier = Modifier
                                     .width(16.percentOfParent(ParentConfig.WIDTH, density))
                                     .height(19.percentOfParent(ParentConfig.HEIGHT, density))
+                                    //.fillMaxWidth(0.16f)
+                                    //.fillMaxHeight(0.19f)
                                     .weight(1f)
                             ) {
                                 onItemSelected(it)

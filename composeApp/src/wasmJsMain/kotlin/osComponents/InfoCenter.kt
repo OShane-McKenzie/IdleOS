@@ -49,8 +49,8 @@ fun InfoCenter(modifier: Modifier = Modifier){
         networkFeatures = contentProvider.netUsageString.value.split("|")
     }
     Box(modifier = modifier
-        .width(26.percentOfParent(ParentConfig.WIDTH, density))
-        .height(84.percentOfParent(ParentConfig.HEIGHT, density))
+        //.width(26.percentOfParent(ParentConfig.WIDTH, density))
+        //.height(84.percentOfParent(ParentConfig.HEIGHT, density))
         .background(
             color = contentProvider.globalColor.value.copy(alpha = 0.0f),
             shape = RoundedCornerShape(percent = Sizes.eight)

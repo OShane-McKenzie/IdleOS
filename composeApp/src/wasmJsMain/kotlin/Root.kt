@@ -80,9 +80,9 @@ class Root {
             if(startApp){
                 Box(
                     modifier = Modifier.fillMaxSize().onGloballyPositioned {
-                        layoutConfigurator.parentWidth.value = it.size.width
-                        layoutConfigurator.parentHeight.value = it.size.height
-                        layoutConfigurator.parentSize.value = (it.size.width * it.size.height)
+                        layoutConfigurator.parentWidth.value = with(density){it.size.width.toDp().toInt(density)}
+                        layoutConfigurator.parentHeight.value = with(density){it.size.height.toDp().toInt(density)}
+                        layoutConfigurator.parentSize.value = (layoutConfigurator.parentWidth.value * layoutConfigurator.parentHeight.value)
                     }
                 ){
                     if(reloadWallpaper){
@@ -186,7 +186,7 @@ class Root {
                                 ) {  offsetX, offsetY, id->
                                     middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
                                     Text(
-                                        contentProvider.clockString.value +" ${contentProvider.panelWidth.value}",
+                                        contentProvider.clockString.value +" ${layoutConfigurator.parentHeight.value}",
                                         fontSize = ((height*0.5)/2).sp,
                                         color = contentProvider.globalTextColor.value
                                     )
@@ -240,12 +240,17 @@ class Root {
                         )
                         Dock(
                             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().fillMaxHeight(0.08f)
+                                .onGloballyPositioned {
+                                    contentProvider.dockHeight.value = with(density){it.size.height.toDp().toFloat(density)}
+                                    contentProvider.dockWidth.value = with(density){it.size.width.toDp().toFloat(density)}
+                                }
                         ) {
                                 width, height->
                             dockHeight = height
                             DockItem(
-                                height = (height*0.7f),
-                                width = (width*0.45f),
+                                modifier = Modifier.fillMaxHeight().wrapContentWidth(),
+                                height = (height*0.75f),
+                                width = (width*0.02f),
                                 id = "Launcher"
                             ){
 
@@ -270,21 +275,21 @@ class Root {
                                 modifier = Modifier.offset {
                                 IntOffset(LayoutValues.controlCenterOffsetX.value.toRoundedInt(),
                                 LayoutValues.controlCenterOffsetY.value.toRoundedInt())
-                                }
+                                }.fillMaxWidth(0.26f).fillMaxHeight(0.42f)
                             )
                         }
                         if(LayoutValues.showInfoCenter.value){
                             InfoCenter(modifier = Modifier.offset {
                                 IntOffset(LayoutValues.infoCenterOffsetX.value.toRoundedInt(),
                                 LayoutValues.infoCenterOffsetY.value.toRoundedInt())
-                                }
+                                }.fillMaxWidth(0.26f).fillMaxHeight(0.84f)
                             )
                         }
                         if(LayoutValues.showOsInfo.value){
                             OsInfo(modifier = Modifier.offset {
                                 IntOffset(LayoutValues.osInfoCenterOffsetX.value.toRoundedInt(),
                                 LayoutValues.osInfoCenterOffsetY.value.toRoundedInt())
-                                }
+                                }.fillMaxWidth(0.16f).fillMaxHeight(0.2f)
                             )
                         }
 
@@ -293,7 +298,7 @@ class Root {
                                 modifier = Modifier.offset {
                                     IntOffset(LayoutValues.osContextMenuOffsetX.value.toRoundedInt(),
                                     LayoutValues.osContextMenuOffsetY.value.toRoundedInt())
-                                }
+                                }.fillMaxWidth(0.16f).fillMaxHeight(0.2f)
                             ) {
                                 LayoutValues.showOsContextMenu.value = false
                                 if(it == "Change Wallpaper"){
@@ -305,34 +310,35 @@ class Root {
                             WallpaperPicker(
                                 onDismissRequest = {LayoutValues.showWallpaperPicker.value = false},
                                 modifier = Modifier.offset {
-                                    IntOffset(1.percentOfParent(ParentConfig.WIDTH,density).toInt(density), (70.percentOfParent(ParentConfig.HEIGHT,density).toInt(density)))
-                                }
+                                    IntOffset(10, layoutConfigurator.parentHeight.value-(layoutConfigurator.parentHeight.value*0.3f).toInt())
+                                }.fillMaxWidth(0.98f).fillMaxHeight(0.2f).align(Alignment.TopCenter)
+
                             ) {
                                 wallpaper = it
                                 reloadWallpaper = !reloadWallpaper
                             }
                         }
-                        IdleAppContainer(
-                            modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
-                                .pointerInput(Unit) {
-                                    detectDragGestures { change, dragAmount ->
-                                        change.consume()
-                                        offsetX += dragAmount.x
-                                        offsetY += dragAmount.y
-                                    }
-                                    detectTapGestures {  }
-                                }.align(appAlignment),
-                            onMaximize = {
-                                offsetX = 0f
-                                offsetY = 0f
-                                appAlignment = Alignment.Center
-                            },
-                            onMinimize = {
-                                offsetX = 0f
-                                offsetY = 0f
-                                appAlignment = Alignment.Center
-                            }
-                        ) {  }
+//                        IdleAppContainer(
+//                            modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
+//                                .pointerInput(Unit) {
+//                                    detectDragGestures { change, dragAmount ->
+//                                        change.consume()
+//                                        offsetX += dragAmount.x
+//                                        offsetY += dragAmount.y
+//                                    }
+//                                    detectTapGestures {  }
+//                                }.align(appAlignment),
+//                            onMaximize = {
+//                                offsetX = 0f
+//                                offsetY = 0f
+//                                appAlignment = Alignment.Center
+//                            },
+//                            onMinimize = {
+//                                offsetX = 0f
+//                                offsetY = 0f
+//                                appAlignment = Alignment.Center
+//                            }
+//                        ) {  }
 
                     }
                     //Brightness overlay

@@ -37,13 +37,12 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
     }
 
     Column(
-        modifier = Modifier.wrapContentSize(),
-        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Spacer(modifier = Modifier.height(5.dp))
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .background(color = Color.Black.copy(alpha = 0.0f), shape = RoundedCornerShape(Sizes.twentyOne))
                 .clickable{
                     isActive = !isActive
@@ -54,9 +53,8 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                     }
                     onClick(isActive)
                 }
-                .height((height*0.6).dp).width((width).dp)
-                .onGloballyPositioned {
-                },
+                .height((height*0.6f).dp).width(width.dp)
+                .padding(top = 3.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -82,7 +80,7 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                         shape = CircleShape
                     )
                     .height(5.dp)
-                    .width(4.dp),
+                    .width(5.dp),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
         ){

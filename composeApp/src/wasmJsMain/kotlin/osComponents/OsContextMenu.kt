@@ -16,7 +16,7 @@ import contentProvider
 import kotlinx.coroutines.delay
 import objects.AnimationStyle
 import objects.ParentConfig
-import percentOfParent
+
 
 @Composable
 fun OsContextMenu(
@@ -34,8 +34,8 @@ fun OsContextMenu(
     Box(
         modifier =
         modifier
-            .width(16.percentOfParent(ParentConfig.WIDTH, density))
-            .height(20.percentOfParent(ParentConfig.HEIGHT, density))
+            //.width(16.percentOfParent(ParentConfig.WIDTH, density))
+            //.height(20.percentOfParent(ParentConfig.HEIGHT, density))
     ){
         if(animate){
             SimpleAnimator(AnimationStyle.SCALE_IN_CENTER){

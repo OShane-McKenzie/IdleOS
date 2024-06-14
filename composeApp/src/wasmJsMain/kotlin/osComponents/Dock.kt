@@ -15,6 +15,7 @@ import contentProvider
 import layoutConfigurator
 import objects.ParentConfig.*
 import percentOfParent
+import toFloat
 import toInt
 
 /**
@@ -31,17 +32,17 @@ fun Dock(modifier: Modifier = Modifier, items: @Composable (Float,Float)-> Unit=
     val density = LocalDensity.current
     val scrollState = rememberScrollState()
     var width by remember {
-        mutableFloatStateOf(layoutConfigurator.parentWidth.value * 0.98f)
+        mutableFloatStateOf(1f)
     }
     var height by remember {
-        mutableFloatStateOf(layoutConfigurator.parentHeight.value * 0.03f)
+        mutableFloatStateOf(1f)
     }
     Column(
         modifier = modifier
             //.width(contentProvider.dockWidth.value.percentOfParent(WIDTH, density))
             //.height(contentProvider.dockHeight.value.percentOfParent(HEIGHT, density))
 
-            .padding(top = 8.dp, bottom = 8.dp),
+            .padding(top = 0.dp, bottom = 3.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -51,14 +52,14 @@ fun Dock(modifier: Modifier = Modifier, items: @Composable (Float,Float)-> Unit=
                 .fillMaxWidth()
                 .horizontalScroll(scrollState)
                 .onGloballyPositioned {
-                    height = it.size.height.toFloat()
-                    width = it.size.height.toFloat()
+                    height = with(density){ it.size.height.toDp().toFloat(density) }
+                    width = with(density){ it.size.width.toDp().toFloat(density) }
                 }
                 .background(
                     shape = RoundedCornerShape(1),
                     color = contentProvider.globalColor.value.copy(alpha = contentProvider.globalTransparency.value)
                 ).padding(0.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
         ) {
             items(width, height)

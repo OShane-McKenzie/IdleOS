@@ -36,8 +36,8 @@ fun OsInfo(modifier:Modifier = Modifier){
     Box(
         modifier =
         modifier
-            .width(16.percentOfParent(ParentConfig.WIDTH, density))
-            .height(20.percentOfParent(ParentConfig.HEIGHT, density))
+            //.width(16.percentOfParent(ParentConfig.WIDTH, density))
+            //.height(20.percentOfParent(ParentConfig.HEIGHT, density))
     ){
         if(animate){
             SimpleAnimator(AnimationStyle.DOWN){

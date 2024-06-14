@@ -22,9 +22,7 @@ import components.ThemeButton
 import contentProvider
 import kotlinx.coroutines.delay
 import objects.AnimationStyle
-import objects.ParentConfig
 import objects.Sizes
-import percentOfParent
 import richColors
 import setDefaultColorTheme
 
@@ -47,8 +45,8 @@ fun ControlCenter(modifier: Modifier = Modifier){
     }
     Box(
         modifier = modifier
-            .width((26.percentOfParent(ParentConfig.WIDTH, density = density)))
-            .height(42.percentOfParent(ParentConfig.HEIGHT, density))
+            //.width((26.percentOfParent(ParentConfig.WIDTH, density = density)))
+            //.height(42.percentOfParent(ParentConfig.HEIGHT, density))
             .background(
             color = contentProvider.globalColor.value.copy(alpha = 0.0f),
             shape = RoundedCornerShape(Sizes.eight)
