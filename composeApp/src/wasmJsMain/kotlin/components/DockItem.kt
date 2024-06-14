@@ -53,7 +53,8 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                     }
                     onClick(isActive)
                 }
-                .height((height*0.6f).dp).width(width.dp)
+                .fillMaxHeight(0.9f)
+                .width(width.dp)
                 .padding(top = 3.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
