@@ -158,7 +158,7 @@ class Root {
                                 PanelWidget(
                                     onClick = {
                                         LayoutValues.osInfoCenterOffsetX.value = (1.percentOfParent(ParentConfig.WIDTH,density).toFloat(density))
-                                        LayoutValues.osInfoCenterOffsetY.value = ((contentProvider.panelHeight.value+1).percentOfParent(ParentConfig.HEIGHT, density).toFloat(density))
+                                        LayoutValues.osInfoCenterOffsetY.value = (contentProvider.panelHeight.value+3)
                                         turnOnWidget(widgetId)
                                     },
                                     id = "osInfo"
@@ -180,7 +180,7 @@ class Root {
                                 PanelWidget(
                                     onClick = {
                                         LayoutValues.calendarOffsetX.value = (0.percentOfParent(ParentConfig.WIDTH, density).toFloat(density))    //(middleWidgetOffsetX-((width*4.5f)))
-                                        LayoutValues.calendarOffsetY.value = ((contentProvider.panelHeight.value+1).percentOfParent(ParentConfig.HEIGHT, density).toFloat(density))
+                                        LayoutValues.calendarOffsetY.value = (contentProvider.panelHeight.value+3)
                                         turnOnWidget(widgetId)
                                     },
                                     id = "calendar"
@@ -200,7 +200,7 @@ class Root {
                                     IconButton(
                                         onClick = {
                                             controlCenterOffsetX = 10.toFloat()
-                                            LayoutValues.controlCenterOffsetY.value = 20f
+                                            LayoutValues.controlCenterOffsetY.value = (contentProvider.panelHeight.value+3)
                                             turnOnWidget(id)
                                         },
                                         modifier = Modifier
@@ -221,7 +221,7 @@ class Root {
                                     IconButton(
                                         onClick = {
                                             LayoutValues.infoCenterOffsetX.value = (offsetX-(calculatedWidth*19.5f))
-                                            LayoutValues.infoCenterOffsetY.value = (offsetY*(height*0.18f))
+                                            LayoutValues.infoCenterOffsetY.value = (contentProvider.panelHeight.value+3)
                                             turnOnWidget(id)
                                         },
                                         modifier = Modifier
