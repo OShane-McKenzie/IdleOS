@@ -37,8 +37,8 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
     var isActive by remember {
         mutableStateOf(false)
     }
-    var calculatedWidth by remember { mutableStateOf(width) }
-    var calculatedHeight by remember { mutableStateOf(height) }
+    var calculatedWidth by remember { mutableStateOf(width.dp) }
+    var calculatedHeight by remember { mutableStateOf(height.dp) }
     val density = LocalDensity.current
     Column(
         modifier = modifier,
@@ -58,10 +58,10 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                     onClick(isActive)
                 }
                 .fillMaxHeight(0.9f)
-                .width(calculatedWidth.dp)
+                .width(calculatedWidth)
                 .onGloballyPositioned {
-                    calculatedHeight = with(density){(it.size.height).toDp().toFloat(density)}
-                    calculatedWidth = with(density){(calculatedHeight*0.5f).toDp().toFloat(density)}
+                    calculatedHeight = with(density){(it.size.height).toDp()}
+                    calculatedWidth = with(density){(it.size.height).toDp()}
                 }
                 .padding(top = 3.dp),
             verticalArrangement = Arrangement.Top,
