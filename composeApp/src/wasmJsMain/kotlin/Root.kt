@@ -186,7 +186,7 @@ class Root {
                                 ) {  offsetX, offsetY, id->
                                     middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
                                     Text(
-                                        contentProvider.clockString.value +" ${layoutConfigurator.parentHeight.value}",
+                                        contentProvider.clockString.value,
                                         fontSize = ((height*0.5)/2).sp,
                                         color = contentProvider.globalTextColor.value
                                     )

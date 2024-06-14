@@ -93,7 +93,7 @@ fun InfoCenter(modifier: Modifier = Modifier){
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ){
-                        StyledText(label = "RAM Usage: ", value = getRamInfo().toString().replace("NaN", "Unknown")+" Gb")
+                        StyledText(label = "RAM: ", value = getRamInfo().toString().replace("NaN", "Unknown")+" Gb")
                     }
                     Spacer(modifier = Modifier.height(Sizes.twentyOne.dp))
                     Text(

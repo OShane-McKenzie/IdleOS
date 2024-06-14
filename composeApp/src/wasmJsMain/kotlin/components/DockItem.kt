@@ -13,12 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
 import idleos.composeapp.generated.resources.Res
 import idleos.composeapp.generated.resources.logo_3
 import objects.Sizes
 import org.jetbrains.compose.resources.painterResource
+import toFloat
 
 /**
  * A composable function that represents a single item in a dock.
@@ -35,7 +37,9 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
     var isActive by remember {
         mutableStateOf(false)
     }
-
+    var calculatedWidth by remember { mutableStateOf(width) }
+    var calculatedHeight by remember { mutableStateOf(height) }
+    val density = LocalDensity.current
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Top,
@@ -54,7 +58,11 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                     onClick(isActive)
                 }
                 .fillMaxHeight(0.9f)
-                .width(width.dp)
+                .width(calculatedWidth.dp)
+                .onGloballyPositioned {
+                    calculatedHeight = with(density){(it.size.height).toDp().toFloat(density)}
+                    calculatedWidth = with(density){(calculatedHeight*0.5f).toDp().toFloat(density)}
+                }
                 .padding(top = 3.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
