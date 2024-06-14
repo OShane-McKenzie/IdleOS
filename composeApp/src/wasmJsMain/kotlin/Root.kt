@@ -145,7 +145,11 @@ class Root {
                         Panel(
                             modifier = Modifier.align(Alignment.TopCenter)
                                 .fillMaxWidth()
-                                .fillMaxHeight(0.05f),
+                                .fillMaxHeight(0.05f)
+                                .onGloballyPositioned {
+                                    contentProvider.panelHeight.value = with(density){it.size.height.toDp().toFloat(density)}
+                                }
+                            ,
                             start = {width, height->
                                 panelHeight = height
                                 var startWidgetOffsetX by remember { mutableFloatStateOf(1.0f) }
