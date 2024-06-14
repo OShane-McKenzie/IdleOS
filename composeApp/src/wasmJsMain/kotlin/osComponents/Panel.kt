@@ -45,8 +45,9 @@ fun Panel(
             .padding(3.dp)
             .background(color = Color.Black.copy(alpha = 0.0f))
             .onGloballyPositioned {
+
                 panelWidth = it.size.width.toFloat()
-                panelHeight = it.size.height.toFloat()
+                panelHeight = with(density){it.size.height.toDp().roundToPx().toFloat()}
             },
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Center

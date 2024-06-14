@@ -68,7 +68,7 @@ fun PanelWidget(
                 }
                 onPositioned(offsetX, offsetY)
             },
-        verticalAlignment = Alignment.Top,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         content(offsetX, offsetY, id)

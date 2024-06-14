@@ -51,9 +51,7 @@ class Root {
 
         val interactionSource = remember { MutableInteractionSource() }
         val indication = LocalIndication.current
-        var controlCenterOffsetX by rememberSaveable {
-            mutableStateOf(1.0f)
-        }
+
         var offsetX by remember { mutableStateOf(0f) }
         var offsetY by remember { mutableStateOf(0f) }
         var appAlignment by remember { mutableStateOf(Alignment.Center) }
@@ -148,6 +146,7 @@ class Root {
                                 .fillMaxHeight(0.05f)
                                 .onGloballyPositioned {
                                     contentProvider.panelHeight.value = with(density){it.size.height.toDp().toFloat(density)}
+                                    contentProvider.panelWidth.value = with(density){it.size.width.toDp().toFloat(density)}
                                 }
                             ,
                             start = {width, height->
@@ -157,7 +156,7 @@ class Root {
                                 var widgetId by remember { mutableStateOf("") }
                                 PanelWidget(
                                     onClick = {
-                                        LayoutValues.osInfoCenterOffsetX.value = (1.percentOfParent(ParentConfig.WIDTH,density).toFloat(density))
+                                        LayoutValues.osInfoCenterOffsetX.value = 5f
                                         LayoutValues.osInfoCenterOffsetY.value = (contentProvider.panelHeight.value+3)
                                         turnOnWidget(widgetId)
                                     },
@@ -168,7 +167,7 @@ class Root {
                                         appName,
                                         fontFamily = FontFamily.Cursive,
                                         fontWeight = FontWeight.Bold,
-                                        fontSize = (height*0.3).sp,
+                                        fontSize = ((height*0.5)/2).sp,
                                         color = contentProvider.globalTextColor.value
                                     )
                                 }
@@ -179,7 +178,7 @@ class Root {
                                 var widgetId by remember { mutableStateOf("") }
                                 PanelWidget(
                                     onClick = {
-                                        LayoutValues.calendarOffsetX.value = (0.percentOfParent(ParentConfig.WIDTH, density).toFloat(density))    //(middleWidgetOffsetX-((width*4.5f)))
+                                        LayoutValues.calendarOffsetX.value = 0f    //(middleWidgetOffsetX-((width*4.5f)))
                                         LayoutValues.calendarOffsetY.value = (contentProvider.panelHeight.value+3)
                                         turnOnWidget(widgetId)
                                     },
@@ -187,8 +186,8 @@ class Root {
                                 ) {  offsetX, offsetY, id->
                                     middleWidgetOffsetX = offsetX; middleWidgetOffsetY = offsetY; widgetId = id
                                     Text(
-                                        contentProvider.clockString.value +" ${100.percentOfParent(ParentConfig.WIDTH, density).toFloat(density)}",
-                                        fontSize = (height*0.25).sp,
+                                        contentProvider.clockString.value +" ${contentProvider.panelWidth.value}",
+                                        fontSize = ((height*0.5)/2).sp,
                                         color = contentProvider.globalTextColor.value
                                     )
                                 }
@@ -199,7 +198,8 @@ class Root {
                                     val calculatedWidth = (width*0.03f)
                                     IconButton(
                                         onClick = {
-                                            controlCenterOffsetX = 10.toFloat()
+
+                                            LayoutValues.controlCenterOffsetX.value = (contentProvider.panelWidth.value*0.735f)
                                             LayoutValues.controlCenterOffsetY.value = (contentProvider.panelHeight.value+3)
                                             turnOnWidget(id)
                                         },
@@ -220,7 +220,7 @@ class Root {
                                     val calculatedWidth = (width*0.03f)
                                     IconButton(
                                         onClick = {
-                                            LayoutValues.infoCenterOffsetX.value = (offsetX-(calculatedWidth*19.5f))
+                                            LayoutValues.infoCenterOffsetX.value = (contentProvider.panelWidth.value*0.735f)
                                             LayoutValues.infoCenterOffsetY.value = (contentProvider.panelHeight.value+3)
                                             turnOnWidget(id)
                                         },
@@ -268,7 +268,7 @@ class Root {
                         if(LayoutValues.showControlCenter.value){
                             ControlCenter(
                                 modifier = Modifier.offset {
-                                IntOffset(controlCenterOffsetX.toRoundedInt(),
+                                IntOffset(LayoutValues.controlCenterOffsetX.value.toRoundedInt(),
                                 LayoutValues.controlCenterOffsetY.value.toRoundedInt())
                                 }
                             )

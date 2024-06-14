@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 
 object LayoutValues {
     val controlCenterOffsetY = mutableStateOf(1.0f)
+    val controlCenterOffsetX = mutableStateOf(1.0f)
 
     val osContextMenuOffsetX = mutableStateOf(1.0f)
     val osContextMenuOffsetY = mutableStateOf(1.0f)
