@@ -38,8 +38,8 @@ fun Dock(modifier: Modifier = Modifier, items: @Composable (Float,Float)-> Unit=
     }
     Column(
         modifier = modifier
-            .width(contentProvider.dockWidth.value.percentOfParent(WIDTH, density))
-            .height(contentProvider.dockHeight.value.percentOfParent(HEIGHT, density))
+            //.width(contentProvider.dockWidth.value.percentOfParent(WIDTH, density))
+            //.height(contentProvider.dockHeight.value.percentOfParent(HEIGHT, density))
 
             .padding(top = 8.dp, bottom = 8.dp),
         verticalArrangement = Arrangement.Center,

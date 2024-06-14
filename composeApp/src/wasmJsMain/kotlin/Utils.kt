@@ -88,9 +88,11 @@ fun Double.percentOfParent(config: ParentConfig, density: Density): Dp {
 }
 
 fun Dp.toInt(density: Density): Int {
+
     return with(density) { this@toInt.toPx().toInt() }
 }
 fun Dp.toFloat(density: Density): Float {
+
     return with(density) { this@toFloat.toPx() }
 }
 fun getDateTimeToString():String {

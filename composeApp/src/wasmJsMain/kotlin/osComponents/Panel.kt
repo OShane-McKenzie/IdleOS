@@ -40,8 +40,8 @@ fun Panel(
 
     Row(
         modifier = modifier
-            .height(contentProvider.panelHeight.value.percentOfParent(HEIGHT, density))
-            .width(contentProvider.panelWidth.value.percentOfParent(WIDTH, density))
+            //.height(contentProvider.panelHeight.value.percentOfParent(HEIGHT, density))
+            //.width(contentProvider.panelWidth.value.percentOfParent(WIDTH, density))
             .padding(3.dp)
             .background(color = Color.Black.copy(alpha = 0.0f))
             .onGloballyPositioned {
