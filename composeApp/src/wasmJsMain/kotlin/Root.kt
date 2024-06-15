@@ -319,7 +319,8 @@ class Root {
                             }
                         }
                         IdleAppContainer(
-                            modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
+                            modifier = Modifier
+                                .offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
                                 .pointerInput(Unit) {
                                     detectDragGestures { change, dragAmount ->
                                         change.consume()
