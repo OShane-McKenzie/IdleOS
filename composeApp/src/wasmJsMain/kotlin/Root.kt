@@ -318,27 +318,27 @@ class Root {
                                 reloadWallpaper = !reloadWallpaper
                             }
                         }
-//                        IdleAppContainer(
-//                            modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
-//                                .pointerInput(Unit) {
-//                                    detectDragGestures { change, dragAmount ->
-//                                        change.consume()
-//                                        offsetX += dragAmount.x
-//                                        offsetY += dragAmount.y
-//                                    }
-//                                    detectTapGestures {  }
-//                                }.align(appAlignment),
-//                            onMaximize = {
-//                                offsetX = 0f
-//                                offsetY = 0f
-//                                appAlignment = Alignment.Center
-//                            },
-//                            onMinimize = {
-//                                offsetX = 0f
-//                                offsetY = 0f
-//                                appAlignment = Alignment.Center
-//                            }
-//                        ) {  }
+                        IdleAppContainer(
+                            modifier = Modifier.offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
+                                .pointerInput(Unit) {
+                                    detectDragGestures { change, dragAmount ->
+                                        change.consume()
+                                        offsetX += dragAmount.x
+                                        offsetY += dragAmount.y
+                                    }
+                                    detectTapGestures {  }
+                                }.align(appAlignment),
+                            onMaximize = {
+                                offsetX = 0f
+                                offsetY = 0f
+                                appAlignment = Alignment.Center
+                            },
+                            onMinimize = {
+                                offsetX = 0f
+                                offsetY = 0f
+                                appAlignment = Alignment.Center
+                            }
+                        ) {  }
 
                     }
                     //Brightness overlay

@@ -49,7 +49,7 @@ fun Int.percentOfParent(config: ParentConfig, density: Density): Dp {
             with(density) { (((thisInt.toFloat()) / 100f) * layoutConfigurator.parentWidth.value).toDp() }
         }
         ParentConfig.HEIGHT -> {
-            with(density) { (((thisInt.toFloat()) / 100f) * layoutConfigurator.parentHeight.value * ScreenType.fromDimensions(layoutConfigurator.parentWidth.value, layoutConfigurator.parentHeight.value).heightScaleFactor).toDp() }
+            with(density) { (((thisInt.toFloat()) / 100f) * layoutConfigurator.parentHeight.value).toDp() }
         }
         ParentConfig.SIZE -> {
             with(density) { (((thisInt.toFloat()) / 100f) * layoutConfigurator.parentSize.value).toDp() }
@@ -64,7 +64,7 @@ fun Float.percentOfParent(config: ParentConfig, density: Density): Dp {
             with(density) { ((thisFloat / 100f) * layoutConfigurator.parentWidth.value).toDp() }
         }
         ParentConfig.HEIGHT -> {
-            with(density) { ((thisFloat / 100f) * layoutConfigurator.parentHeight.value * ScreenType.fromDimensions(layoutConfigurator.parentWidth.value, layoutConfigurator.parentHeight.value).heightScaleFactor).toDp() }
+            with(density) { ((thisFloat / 100f) * layoutConfigurator.parentHeight.value).toDp() }
         }
         ParentConfig.SIZE -> {
             with(density) { ((thisFloat / 100f) * layoutConfigurator.parentSize.value).toDp() }
@@ -79,7 +79,7 @@ fun Double.percentOfParent(config: ParentConfig, density: Density): Dp {
             with(density) { ((thisDouble / 100f) * layoutConfigurator.parentWidth.value).toFloat().toDp() }
         }
         ParentConfig.HEIGHT -> {
-            with(density) { (((thisDouble / 100f) * layoutConfigurator.parentHeight.value).toFloat() * ScreenType.fromDimensions(layoutConfigurator.parentWidth.value, layoutConfigurator.parentHeight.value).heightScaleFactor).toDp() }
+            with(density) { (((thisDouble / 100f) * layoutConfigurator.parentHeight.value).toFloat()).toDp() }
         }
         ParentConfig.SIZE -> {
             with(density) { ((thisDouble / 100f) * layoutConfigurator.parentSize.value).toFloat().toDp() }

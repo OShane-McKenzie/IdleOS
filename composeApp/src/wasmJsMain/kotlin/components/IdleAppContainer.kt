@@ -118,8 +118,8 @@ fun IdleAppContainer(
                             ) {
                                 onMinimize.invoke()
                                 transparency = contentProvider.globalTransparency.value
-                                windowHeight = 30.percentOfParent(ParentConfig.HEIGHT, density)
-                                windowWidth = 35.percentOfParent(ParentConfig.WIDTH, density)
+                                windowHeight = 50.percentOfParent(ParentConfig.HEIGHT, density)
+                                windowWidth = 50.percentOfParent(ParentConfig.WIDTH, density)
                             }
                             ImageButton(
                                 wallpaper = Res.drawable.max,
