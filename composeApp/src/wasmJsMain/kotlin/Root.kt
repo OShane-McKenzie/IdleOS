@@ -29,6 +29,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import apps.IdleSettings
 import components.DockItem
 import components.IdleAppContainer
 import components.PanelWidget
@@ -320,6 +322,7 @@ class Root {
                         }
                         IdleAppContainer(
                             modifier = Modifier
+
                                 .offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
                                 .pointerInput(Unit) {
                                     detectDragGestures { change, dragAmount ->
@@ -339,7 +342,9 @@ class Root {
                                 offsetY = 0f
                                 appAlignment = Alignment.Center
                             }
-                        ) {  }
+                        ) {
+                            IdleSettings(modifier = Modifier.fillMaxSize())
+                        }
 
                     }
                     //Brightness overlay

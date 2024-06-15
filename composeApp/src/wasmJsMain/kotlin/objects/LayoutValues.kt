@@ -29,4 +29,7 @@ object LayoutValues {
 
     val showWallpaperPicker = mutableStateOf(false)
     val showOsContextMenu = mutableStateOf(false)
+
+    val settingsAppOffsetX = mutableSetOf(0f)
+    val settingsApOffsetY = mutableSetOf(0f)
 }

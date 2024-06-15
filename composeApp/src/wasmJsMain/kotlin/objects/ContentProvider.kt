@@ -23,4 +23,6 @@ class ContentProvider {
     val ramUsageString = mutableStateOf("")
     val netUsageString = mutableStateOf("")
     val widgetList:SnapshotStateList<String> = mutableStateListOf()
+    val panelHeightScaleFactor = mutableStateOf(0.05f)
+    val dockHeightScaleFactor = mutableStateOf(0.08f)
 }
