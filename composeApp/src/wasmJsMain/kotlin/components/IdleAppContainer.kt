@@ -3,16 +3,20 @@ package components
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
@@ -22,9 +26,11 @@ import idleos.composeapp.generated.resources.max
 import idleos.composeapp.generated.resources.min
 import kotlinx.coroutines.delay
 import layoutConfigurator
+import models.IdleAppModel
 import objects.AnimationStyle
 import objects.ParentConfig
 import objects.Sizes
+import org.jetbrains.compose.resources.painterResource
 import percentOfParent
 
 
@@ -33,16 +39,20 @@ fun IdleAppContainer(
     modifier: Modifier = Modifier,
     borderShape: Shape = RoundedCornerShape(Sizes.three),
     displayWindow: Boolean = true,
+    isMoving:Boolean = false,
     onMinimize: () -> Unit = {},
     onMaximize: () -> Unit = {},
     onCloseRequest: () -> Unit = {},
-    content: @Composable () -> Unit = {}
+    app:IdleAppModel = IdleAppModel()
 ) {
     val density = LocalDensity.current
     var animate by remember { mutableStateOf(false) }
     var windowHeight by remember { mutableStateOf(10.percentOfParent(ParentConfig.HEIGHT, density)) }
     var windowWidth by remember { mutableStateOf(10.percentOfParent(ParentConfig.WIDTH, density)) }
     var isDisplayWindow by remember { mutableStateOf(displayWindow) }
+
+    var isMaximized by remember { mutableStateOf(false) }
+    var isMinimized by remember { mutableStateOf(false) }
 
     var callIsDisplayWindow by remember { mutableStateOf(false) }
 
@@ -64,15 +74,36 @@ fun IdleAppContainer(
         windowWidth =  55.percentOfParent(ParentConfig.WIDTH, density)
         animate = true
     }
+    LaunchedEffect(contentProvider.globalTransparency.value){
+        transparency = contentProvider.globalTransparency.value
+    }
     LaunchedEffect(callIsDisplayWindow){
         if(callIsDisplayWindow){
             windowWidth = 5.percentOfParent(ParentConfig.WIDTH, density)
             windowHeight = 5.percentOfParent(ParentConfig.HEIGHT, density)
             delay(190)
+            onCloseRequest.invoke()
             isDisplayWindow = false
         }
     }
-
+//    LaunchedEffect(isMoving){
+//        if(isMaximized){
+//            transparency = contentProvider.globalTransparency.value
+//            windowHeight = 50.percentOfParent(ParentConfig.HEIGHT, density)
+//            windowWidth = 55.percentOfParent(ParentConfig.WIDTH, density)
+//            isMinimized = true
+//            isMaximized = false
+//        }
+//    }
+//    LaunchedEffect(isMaximized){
+//        if(isMaximized){
+//            delay(100)
+//
+//            transparency = 1.0f
+//            windowHeight = 100.percentOfParent(ParentConfig.HEIGHT, density)
+//            windowWidth = 100.percentOfParent(ParentConfig.WIDTH, density)
+//        }
+//    }
     if(isDisplayWindow){
         Box(
             modifier = modifier
@@ -108,9 +139,27 @@ fun IdleAppContainer(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.End
                         ) {
+                            Row(
+                                modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(3.dp).weight(0.1f),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Image(
+                                    painter = painterResource(app.icon),
+                                    contentDescription = "Wallpaper",
+                                    contentScale = ContentScale.FillBounds,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .height(Sizes.thirtyFour.dp)
+                                        .width(Sizes.thirtyFour.dp)
+
+                                )
+                                Text(app.name, color = contentProvider.globalTextColor.value)
+                            }
                             ImageButton(
                                 wallpaper = Res.drawable.min,
                                 modifier = Modifier
+                                    .weight(0.1f)
                                     .padding(0.dp)
                                     .clip(CircleShape)
                                     .fillMaxHeight()
@@ -119,11 +168,14 @@ fun IdleAppContainer(
                                 onMinimize.invoke()
                                 transparency = contentProvider.globalTransparency.value
                                 windowHeight = 50.percentOfParent(ParentConfig.HEIGHT, density)
-                                windowWidth = 50.percentOfParent(ParentConfig.WIDTH, density)
+                                windowWidth = 55.percentOfParent(ParentConfig.WIDTH, density)
+                                isMinimized = true
+                                isMaximized = false
                             }
                             ImageButton(
                                 wallpaper = Res.drawable.max,
                                 modifier = Modifier
+                                    .weight(0.1f)
                                     .padding(0.dp)
                                     .clip(CircleShape)
                                     .fillMaxHeight()
@@ -133,20 +185,22 @@ fun IdleAppContainer(
                                 transparency = 1.0f
                                 windowHeight = 100.percentOfParent(ParentConfig.HEIGHT, density)
                                 windowWidth = 100.percentOfParent(ParentConfig.WIDTH, density)
+                                isMaximized = true
+                                isMinimized = false
                             }
                             ImageButton(
                                 wallpaper = Res.drawable.close,
                                 modifier = Modifier
+                                    .weight(0.1f)
                                     .padding(0.dp)
                                     .clip(CircleShape)
                                     .fillMaxHeight()
                                     .width(32.dp)
                             ) {
-                                onCloseRequest.invoke()
                                 callIsDisplayWindow = true
                             }
                         }
-                        content()
+                        app.app.invoke()
                     }
                 }
             }

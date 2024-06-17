@@ -38,6 +38,7 @@ import components.SimpleAnimator
 import idleos.composeapp.generated.resources.*
 import idleos.composeapp.generated.resources.Res
 import kotlinx.coroutines.*
+import models.IdleAppModel
 import objects.AnimationStyle
 import objects.ParentConfig
 import org.jetbrains.compose.resources.painterResource
@@ -145,7 +146,7 @@ class Root {
                         Panel(
                             modifier = Modifier.align(Alignment.TopCenter)
                                 .fillMaxWidth()
-                                .fillMaxHeight(0.05f)
+                                .fillMaxHeight(contentProvider.panelHeightScaleFactor.value)
                                 .onGloballyPositioned {
                                     contentProvider.panelHeight.value = with(density){it.size.height.toDp().toFloat(density)}
                                     contentProvider.panelWidth.value = with(density){it.size.width.toDp().toFloat(density)}
@@ -241,7 +242,7 @@ class Root {
                             }
                         )
                         Dock(
-                            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().fillMaxHeight(0.08f)
+                            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().fillMaxHeight(contentProvider.dockHeightScaleFactor.value)
                                 .onGloballyPositioned {
                                     contentProvider.dockHeight.value = with(density){it.size.height.toDp().toFloat(density)}
                                     contentProvider.dockWidth.value = with(density){it.size.width.toDp().toFloat(density)}
@@ -256,6 +257,19 @@ class Root {
                                 id = "Launcher"
                             ){
 
+                            }
+                            Spacer(modifier = Modifier.width(5.dp))
+                            appProvider.appList.forEach { app ->
+                                DockItem(
+                                    modifier = Modifier.fillMaxHeight().wrapContentWidth(),
+                                    height = (height*0.75f),
+                                    width = (width*0.02f),
+                                    id = app.name,
+                                    painter = painterResource(app.icon)
+                                ){
+                                    appProvider.startApp(app.name)
+                                }
+                                Spacer(modifier = Modifier.width(5.dp))
                             }
                         }
                         if(LayoutValues.showCalendar.value){
@@ -320,32 +334,8 @@ class Root {
                                 reloadWallpaper = !reloadWallpaper
                             }
                         }
-                        IdleAppContainer(
-                            modifier = Modifier
 
-                                .offset { IntOffset(offsetX.toRoundedInt(), offsetY.toRoundedInt()) }
-                                .pointerInput(Unit) {
-                                    detectDragGestures { change, dragAmount ->
-                                        change.consume()
-                                        offsetX += dragAmount.x
-                                        offsetY += dragAmount.y
-                                    }
-                                    detectTapGestures {  }
-                                }.align(appAlignment),
-                            onMaximize = {
-                                offsetX = 0f
-                                offsetY = 0f
-                                appAlignment = Alignment.Center
-                            },
-                            onMinimize = {
-                                offsetX = 0f
-                                offsetY = 0f
-                                appAlignment = Alignment.Center
-                            }
-                        ) {
-                            IdleSettings(modifier = Modifier.fillMaxSize())
-                        }
-
+                        appProvider.Show()
                     }
                     //Brightness overlay
                     Column(modifier = Modifier

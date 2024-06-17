@@ -7,8 +7,12 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 
 class ContentProvider {
+    val defaultPanelHeightScaleFactor = 0.05f
+    val defaultDockHeightScaleFactor = 0.08f
+    val defaultGlobalTransparency = 0.7f
+    val settingsAppControllerIndex = mutableStateOf(0)
     val globalColor = mutableStateOf(Color(0xffffffff))
-    val globalTransparency = mutableFloatStateOf(0.7f)
+    val globalTransparency = mutableFloatStateOf(defaultGlobalTransparency)
     val globalTextColor = mutableStateOf(Color(0xff000000))
     val activeDockItemIndicator = mutableStateOf(Color(0xff000000))
     val inactiveDockItemIndicator = mutableStateOf(Color(0xff706e6e))
@@ -23,6 +27,7 @@ class ContentProvider {
     val ramUsageString = mutableStateOf("")
     val netUsageString = mutableStateOf("")
     val widgetList:SnapshotStateList<String> = mutableStateListOf()
-    val panelHeightScaleFactor = mutableStateOf(0.05f)
-    val dockHeightScaleFactor = mutableStateOf(0.08f)
+    val panelHeightScaleFactor = mutableStateOf(defaultPanelHeightScaleFactor)
+    val dockHeightScaleFactor = mutableStateOf(defaultDockHeightScaleFactor)
+
 }

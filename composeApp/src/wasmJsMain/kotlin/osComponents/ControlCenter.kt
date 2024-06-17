@@ -1,5 +1,6 @@
 package osComponents
 
+import ColorTheme
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 
@@ -16,15 +17,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import appProvider
 import components.ColorButton
 import components.SimpleAnimator
 import components.ThemeButton
 import contentProvider
+import idleSettingsScreens
 import kotlinx.coroutines.delay
 import objects.AnimationStyle
+import objects.LayoutValues
 import objects.Sizes
 import richColors
 import setDefaultColorTheme
+import settingsAppNavigator
 
 /**
  * ControlCenter is a composable function that displays a control center UI.
@@ -112,7 +117,12 @@ fun ControlCenter(modifier: Modifier = Modifier){
                             Text("Custom Color Schemes",color = contentProvider.globalTextColor.value)
 
                             Button(
-                                onClick = {},
+                                onClick = {
+                                    settingsAppNavigator.setViewState(ColorTheme)
+                                    contentProvider.settingsAppControllerIndex.value = idleSettingsScreens.indexOf(settingsAppNavigator.getView())
+                                    appProvider.startApp("Settings")
+                                    LayoutValues.showControlCenter.value = false
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .fillMaxHeight()
