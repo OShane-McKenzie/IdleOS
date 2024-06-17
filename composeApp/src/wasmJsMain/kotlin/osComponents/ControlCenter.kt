@@ -115,7 +115,6 @@ fun ControlCenter(modifier: Modifier = Modifier){
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){
                             Text("Custom Color Schemes",color = contentProvider.globalTextColor.value)
-
                             Button(
                                 onClick = {
                                     settingsAppNavigator.setViewState(ColorTheme)
