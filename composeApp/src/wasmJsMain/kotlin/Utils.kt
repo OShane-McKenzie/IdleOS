@@ -230,7 +230,16 @@ val wallPapers = listOf(
     Res.drawable.eight,
     Res.drawable.nine,
     Res.drawable.ten,
-    Res.drawable.eleven
+    Res.drawable.eleven,
+    Res.drawable.twelve,
+    Res.drawable.thirteen,
+    Res.drawable.fourteen,
+    Res.drawable.fifteen,
+    Res.drawable.sixteen,
+    Res.drawable.eighteen,
+    Res.drawable.nineteen,
+    Res.drawable.twenty
 )
+
 
 

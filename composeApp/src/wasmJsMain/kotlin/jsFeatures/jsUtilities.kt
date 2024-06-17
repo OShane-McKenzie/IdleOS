@@ -34,6 +34,7 @@ fun getCpuInfo(): Int {
     return cpu
 }
 
+@OptIn(ExperimentalJsExport::class)
 @JsExport
 fun getNetworkInfo(): String {
     val downLink = navigator.connection.downLink
