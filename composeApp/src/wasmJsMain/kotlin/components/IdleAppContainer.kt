@@ -215,7 +215,7 @@ fun IdleAppContainer(
 
             Image(
                 painter = painterResource(Res.drawable.drag),
-                contentDescription = "drag",
+                contentDescription = "Drag",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .clip(RoundedCornerShape(100))
