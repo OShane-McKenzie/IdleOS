@@ -1,7 +1,9 @@
 package objects
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -11,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.zIndex
 import apps.IdleSettings
 import components.IdleAppContainer
 import contentProvider
@@ -24,6 +27,7 @@ class AppProvider {
     val appList:SnapshotStateList<IdleAppModel> = mutableStateListOf()
     val addedApps:SnapshotStateList<String> = mutableStateListOf()
     val runningApps:SnapshotStateList<String> = mutableStateListOf()
+    val selectedApp = mutableStateOf("")
     init {
         appList.add(
             IdleAppModel().apply {
@@ -54,6 +58,7 @@ class AppProvider {
     @Composable
     fun Show(){
         val displayedApps by remember { derivedStateOf { addedApps.toList() } }
+        val interactionSource = remember { MutableInteractionSource() }
 
         Box(modifier = Modifier.fillMaxSize()) {
             appList.forEach { app ->
@@ -61,6 +66,12 @@ class AppProvider {
                     IdleAppContainer(
                         modifier = Modifier
                             .offset { IntOffset(app.offsetX.value.roundToInt(), app.offsetY.value.roundToInt()) }
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null
+                            ) {
+                                selectedApp.value = app.name
+                            }
                             .pointerInput(Unit) {
                                 detectDragGestures { change, dragAmount ->
                                     change.consume()
@@ -68,7 +79,9 @@ class AppProvider {
                                     app.offsetY.value += dragAmount.y
                                 }
                                 detectTapGestures { }
-                            }.align(app.alignment.value),
+                            }
+                            .zIndex(if(selectedApp.value==app.name){1f}else{0f})
+                            .align(app.alignment.value),
                         onMaximize = {
                             app.offsetX.value = 0f
                             app.offsetY.value = 0f

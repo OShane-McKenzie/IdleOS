@@ -83,10 +83,14 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                         if(isActive && (id in contentProvider.launchedDockItems)) {
                             contentProvider.activeDockItemIndicator.value}
                         else if(!isActive && (id in contentProvider.launchedDockItems)){
-                            contentProvider.inactiveDockItemIndicator.value
+                            contentProvider.inactiveDockItemIndicator.value}
+                        else if(isActive && (id !in contentProvider.launchedDockItems)){
+                                isActive = false
+                                contentProvider.inactiveDockItemIndicator.value.copy(alpha = 0.0f)
                         }else{
                             contentProvider.inactiveDockItemIndicator.value.copy(alpha = 0.0f)
                         },
+                        //if (isActive) contentProvider.activeDockItemIndicator.value else contentProvider.inactiveDockItemIndicator.value.copy(alpha = 0.0f),
                         shape = CircleShape
                     )
                     .height(5.dp)
@@ -95,6 +99,11 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                 horizontalAlignment = Alignment.CenterHorizontally
         ){
 
+        }
+        DisposableEffect(Unit){
+            onDispose {
+                isActive = false
+            }
         }
     }
 }

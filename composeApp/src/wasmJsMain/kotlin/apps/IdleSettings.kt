@@ -4,6 +4,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,6 +70,7 @@ fun IdleSettings(modifier: Modifier = Modifier){
 }
 @Composable
 private fun SettingsButton(modifier: Modifier = Modifier,label:String, index:Int){
+
     Row(modifier = Modifier.padding(8.dp)){
         Row(
             modifier =

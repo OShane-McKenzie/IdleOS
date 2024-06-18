@@ -7,19 +7,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
+import idleos.composeapp.generated.resources.*
 import idleos.composeapp.generated.resources.Res
 import idleos.composeapp.generated.resources.close
 import idleos.composeapp.generated.resources.max
@@ -146,10 +154,10 @@ fun IdleAppContainer(
                             ) {
                                 Image(
                                     painter = painterResource(app.icon),
-                                    contentDescription = "Wallpaper",
+                                    contentDescription = "app icon",
                                     contentScale = ContentScale.FillBounds,
                                     modifier = Modifier
-                                        .clip(RoundedCornerShape(8.dp))
+                                        .clip(RoundedCornerShape(8))
                                         .height(Sizes.thirtyFour.dp)
                                         .width(Sizes.thirtyFour.dp)
 
@@ -204,6 +212,30 @@ fun IdleAppContainer(
                     }
                 }
             }
+
+            Image(
+                painter = painterResource(Res.drawable.drag),
+                contentDescription = "drag",
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(100))
+                    .height(Sizes.twentyOne.dp)
+                    .width(Sizes.twentyOne.dp)
+                    .align(Alignment.BottomEnd)
+                    .background(color = Color.Gray.copy(alpha = 0.5f), shape = RoundedCornerShape(100))
+                    .clickable {
+
+                    }
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            windowWidth += dragAmount.x.toDp()
+                            windowHeight += dragAmount.y.toDp()
+                        }
+                        detectTapGestures { }
+                    }
+
+            )
         }
     }
 }
