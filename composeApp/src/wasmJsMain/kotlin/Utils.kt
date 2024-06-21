@@ -249,8 +249,6 @@ val wallPapers = listOf(
     Res.drawable.twenty
 )
 
-
-
 fun getSimulatedCpuInfo(core:Int):String{
     return """
         processor       : $core
