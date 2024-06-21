@@ -11,13 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
+import apps.IdleFileManager
 import apps.IdleSettings
 import components.IdleAppContainer
 import contentProvider
 import idleos.composeapp.generated.resources.Res
+import idleos.composeapp.generated.resources.file_manager
 import idleos.composeapp.generated.resources.settings
 import models.IdleAppModel
 import toRoundedInt
@@ -34,6 +38,13 @@ class AppProvider {
                 this.name = "Settings"
                 this.app = { IdleSettings() }
                 this.icon = Res.drawable.settings
+            }
+        )
+        appList.add(
+            IdleAppModel().apply {
+                this.name = "File Manager"
+                this.icon = Res.drawable.file_manager
+                this.app = { IdleFileManager() }
             }
         )
     }
@@ -79,6 +90,14 @@ class AppProvider {
                                     app.offsetY.value += dragAmount.y
                                 }
                                 detectTapGestures { }
+                                awaitPointerEventScope {
+                                    while (true) {
+                                        val event = awaitPointerEvent()
+                                        if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
+                                            val x = 0
+                                        }
+                                    }
+                                }
                             }
                             .zIndex(if(selectedApp.value==app.name){1f}else{0f})
                             .align(app.alignment.value),

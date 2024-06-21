@@ -3,6 +3,8 @@ package objects
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import fileSystemLogs
 
 
 /**
@@ -19,7 +21,7 @@ class AppNavigator(
 ) {
     // Private properties to store navigation history and current view state.
 
-    private val screenArray = mutableStateListOf<String>()
+    private val screenArray: SnapshotStateList<String> = mutableStateListOf()
     private val setView = mutableStateOf(initialScreen)
     private val firstScreen = initialScreen
     private var getTerminationActions: Array<() -> Unit> = terminationActions
@@ -46,7 +48,7 @@ class AppNavigator(
     ) {
 
         if (setView.value != view &&
-            setView.value != firstScreen &&
+            //setView.value != firstScreen &&
             setView.value != "loading" &&
             view.trim() != "" && updateHistory
         ) {
@@ -83,9 +85,11 @@ class AppNavigator(
     fun getView(): String {
         return setView.value
     }
-
+    fun getScreenCount():Int{
+        return screenArray.size
+    }
     fun getLastIndex(): Int {
-        return screenArray.size - 1
+        return screenArray.size -1
     }
 
     val screenTerminationActionsList = mutableStateMapOf<String, () -> Unit>()
@@ -102,6 +106,7 @@ class AppNavigator(
         setView.value = screenArray[lastIndex]
         // Remove the last item from the navigation history array.
         screenArray.removeAt(lastIndex)
+
     }
 
 }

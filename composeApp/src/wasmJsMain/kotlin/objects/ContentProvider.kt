@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
+import fileSystem
+import models.IdleDirectory
 
 class ContentProvider {
     val defaultPanelHeightScaleFactor = 0.05f
@@ -29,5 +31,10 @@ class ContentProvider {
     val widgetList:SnapshotStateList<String> = mutableStateListOf()
     val panelHeightScaleFactor = mutableStateOf(defaultPanelHeightScaleFactor)
     val dockHeightScaleFactor = mutableStateOf(defaultDockHeightScaleFactor)
+    val presentWorkingDirectory = mutableStateOf(fileSystem.getRootFileSystem())
+    val currentPath = mutableStateOf("")
+    val lastAddedToPath = mutableStateOf("")
+    val previousPath = mutableStateOf("")
+
 
 }

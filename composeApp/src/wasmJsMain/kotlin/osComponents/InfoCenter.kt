@@ -6,7 +6,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import components.SimpleAnimator
 import components.StyledText
 import contentProvider
+import fileSystem
+import fileSystemLogs
 import jsFeatures.getCpuInfo
 import jsFeatures.getRamInfo
 import kotlinx.coroutines.delay
@@ -35,6 +39,7 @@ import percentOfParent
 @Composable
 fun InfoCenter(modifier: Modifier = Modifier){
     val density = LocalDensity.current
+    val scrollState = rememberScrollState()
     var animate by remember {
         mutableStateOf(false)
     }
@@ -104,7 +109,7 @@ fun InfoCenter(modifier: Modifier = Modifier){
                     Spacer(modifier = Modifier.height(Sizes.five.dp))
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
-                        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                        modifier = Modifier.fillMaxWidth().wrapContentHeight()
                     ){
                         itemsIndexed(networkFeatures){ index, item ->
                             Row(
@@ -130,7 +135,18 @@ fun InfoCenter(modifier: Modifier = Modifier){
                                 }
                             }
                         }
+
                     }
+                    Text("System Logs", color = contentProvider.globalTextColor.value,
+                        fontWeight = FontWeight.Bold)
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.fillMaxWidth().fillMaxHeight().verticalScroll(scrollState)
+                    ) {
+                        Text(fileSystemLogs.value)
+                    }
+
                 }
             }
         }

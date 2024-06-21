@@ -49,7 +49,7 @@ fun IdleSettings(modifier: Modifier = Modifier){
                     .padding(3.dp)
                     .background(
                         color = contentProvider.globalColor.value,
-                        shape = RoundedCornerShape(5)
+                        shape = RoundedCornerShape(3)
                     )
             ) {
                 when (settingsAppNavigator.getView()) {
