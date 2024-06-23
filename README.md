@@ -32,6 +32,9 @@ Take a look at some screenshots of IdleOS in action:
 ![Screenshot 4](Screen_Shots/4.png)
 ![Screenshot 5](Screen_Shots/5.png)
 
+## Try It Out
+You can run IdleOS : [IdleOS Live Demo](https://oshane-mckenzie.github.io/IdleOS/app/index.html)
+
 ## Contributing
 
 We welcome contributions from the community! If you're interested in helping us build new features, fix bugs, or improve the documentation, please consider contributing.
