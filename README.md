@@ -1,14 +1,14 @@
 ---
 
 # IdleOS
-
+IdleOS is a simulated desktop environment built using Kotlin/WASM and Jetpack Compose
 ![IdleOS Screenshot](Screen_Shots/1.png)
 
 ## Overview
 
-Welcome to **IdleOS**! IdleOS is a cutting-edge simulated desktop environment built using Kotlin/WASM and Jetpack Compose. This project showcases the power and flexibility of Jetpack Compose for creating rich, interactive UIs that can run seamlessly across different platforms. For more information on Kotlin/WASM, check out the [Kotlin/WASM](https://kotlinlang.org/docs/wasm-overview.html).
+Welcome to **IdleOS**! IdleOS is a simulated desktop environment built using Kotlin/WASM and Jetpack Compose. This project showcases the power and flexibility of Jetpack Compose for creating rich, interactive UIs that can run seamlessly across different platforms. For more information on Kotlin/WASM, check out the [Kotlin/WASM](https://kotlinlang.org/docs/wasm-overview.html).
 
-IdleOS includes a variety of core features you would expect from a desktop environment, such as a panel, dock, terminal, file manager, settings app, control center, info center, and much more. Our aim is to create a versatile and customizable desktop experience that is accessible and enjoyable for all users.
+IdleOS includes a variety of core features you would expect from a desktop environment, such as a panel, dock, terminal, file manager, settings app, control center, info center, and more. Our aim is to create a fun and customizable desktop experience that is accessible and enjoyable for all users.
 
 We are actively seeking contributors to help us enhance IdleOS, especially in developing new features like a browser and a text editor.
 
