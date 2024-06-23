@@ -35,6 +35,9 @@ Take a look at some screenshots of IdleOS in action:
 ## Try It Out
 You can run IdleOS : [IdleOS Live Demo](https://oshane-mckenzie.github.io/IdleOS/app/index.html)
 
+### Supported Browsers
+IdleOS supports all Chromium-based browsers. Please note that it is not supported on Safari, Falkon, and Firefox.
+
 ## Contributing
 
 We welcome contributions from the community! If you're interested in helping us build new features, fix bugs, or improve the documentation, please consider contributing.
