@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import contentProvider
 import idleos.composeapp.generated.resources.Res
+import idleos.composeapp.generated.resources.idleos
 import idleos.composeapp.generated.resources.logo_3
 import objects.Sizes
 import org.jetbrains.compose.resources.painterResource
@@ -34,7 +35,7 @@ import toFloat
  * @param onClick The callback function when the dock item is clicked. Default is an empty function.
  */
 @Composable
-fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0.0f, width:Float=0.0f, painter:Painter = painterResource(Res.drawable.logo_3),onClick:(Boolean)->Unit={}){
+fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0.0f, width:Float=0.0f, painter:Painter = painterResource(Res.drawable.idleos),iconBg:Color = contentProvider.globalColor.value.copy(alpha = 0.0f),onClick:(Boolean)->Unit={}){
     var isActive by remember {
         mutableStateOf(false)
     }
@@ -73,6 +74,7 @@ fun DockItem(modifier: Modifier = Modifier,id:String = "default", height:Float=0
                 contentDescription = "",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize().clip(CircleShape)
+                    .background(color = iconBg, shape = CircleShape)
             )
         }
         //Spacer(modifier = Modifier.height(5.dp))

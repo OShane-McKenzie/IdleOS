@@ -10,13 +10,19 @@ val contentProvider = ContentProvider()
 val layoutConfigurator = LayoutConfigurator()
 val settingsAppNavigator = AppNavigator(DockAndPanel)
 val appProvider = AppProvider()
-
+val idleTerminalCommands = IdleTerminalCommands()
 val root = Root()
 
 
 @Composable
 fun App() {
-
+//    LaunchedEffect(true){
+//        var cpu = ""
+//        for(i in 0..cpuCores){
+//            cpu += getSimulatedCpuInfo(i)
+//        }
+//        fileSystemLogs.value = cpu
+//    }
     MaterialTheme {
         root.Parent()
     }

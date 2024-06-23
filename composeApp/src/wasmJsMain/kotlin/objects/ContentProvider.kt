@@ -35,6 +35,9 @@ class ContentProvider {
     val currentPath = mutableStateOf("")
     val lastAddedToPath = mutableStateOf("")
     val previousPath = mutableStateOf("")
-
-
+    val startApp = mutableStateOf(false)
+    val isLoggedOut = mutableStateOf(false)
+    private val login = mutableStateOf("IdleOS")
+    private val password = mutableStateOf("IdleOS/wasm")
+    fun getSecrets() = run { Pair<String, String>(login.value, password.value) }
 }

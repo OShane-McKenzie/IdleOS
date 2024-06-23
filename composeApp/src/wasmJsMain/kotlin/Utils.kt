@@ -278,7 +278,7 @@ fun getSimulatedCpuInfo(core:Int):String{
         cache_alignment : 64
         address sizes   : 39 bits physical, 48 bits virtual
         
-    """.trimIndent()
+    """.trimIndent()+"\n"
 }
 
 fun getSimulatedMemInfo():String{
@@ -346,4 +346,11 @@ fun removeFromPath(path: String) {
         val newPath = currentPath.removeSuffix(path)
         contentProvider.currentPath.value = newPath
     }
+}
+fun String.trimStart(): String {
+    var startIndex = 0
+    while (startIndex < length && this[startIndex].isWhitespace()) {
+        startIndex++
+    }
+    return substring(startIndex)
 }

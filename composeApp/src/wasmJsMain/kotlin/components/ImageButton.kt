@@ -14,17 +14,17 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ImageButton(modifier: Modifier = Modifier, wallpaper:DrawableResource,onClick: () -> Unit) {
+fun ImageButton(modifier: Modifier = Modifier, image:DrawableResource, onClick: () -> Unit) {
     Box(
         modifier = Modifier.padding(8.dp),
         contentAlignment = Alignment.Center
     ){
         Image(
-            painter = painterResource(wallpaper),
-            contentDescription = "Wallpaper",
+            painter = painterResource(image),
+            contentDescription = "Image",
             contentScale = ContentScale.FillBounds,
             modifier = modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(8))
                 .clickable {
                     onClick()
                 }

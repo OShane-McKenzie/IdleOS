@@ -18,11 +18,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import apps.IdleFileManager
 import apps.IdleSettings
+import apps.IdleTerminal
 import components.IdleAppContainer
 import contentProvider
 import idleos.composeapp.generated.resources.Res
 import idleos.composeapp.generated.resources.file_manager
 import idleos.composeapp.generated.resources.settings
+import idleos.composeapp.generated.resources.terminal
 import models.IdleAppModel
 import toRoundedInt
 import kotlin.math.roundToInt
@@ -45,6 +47,13 @@ class AppProvider {
                 this.name = "File Manager"
                 this.icon = Res.drawable.file_manager
                 this.app = { IdleFileManager() }
+            }
+        )
+        appList.add(
+            IdleAppModel().apply {
+                this.name = "Terminal"
+                this.icon = Res.drawable.terminal
+                this.app = { IdleTerminal() }
             }
         )
     }

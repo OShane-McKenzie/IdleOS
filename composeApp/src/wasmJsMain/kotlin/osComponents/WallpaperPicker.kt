@@ -3,28 +3,23 @@ package osComponents
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import components.ImageButton
 import components.SimpleAnimator
 import contentProvider
-import idleos.composeapp.generated.resources.Res
 import kotlinx.coroutines.delay
 import objects.AnimationStyle
 import objects.ParentConfig
 import org.jetbrains.compose.resources.DrawableResource
 import percentOfParent
-import toInt
 import wallPapers
 
 @Composable
@@ -63,7 +58,7 @@ fun WallpaperPicker(modifier: Modifier = Modifier, onDismissRequest:()->Unit={},
                     ) {
                         wallPapers.forEach {
                             ImageButton(
-                                wallpaper = it, modifier = Modifier
+                                image = it, modifier = Modifier
                                     .width(16.percentOfParent(ParentConfig.WIDTH, density))
                                     .height(19.percentOfParent(ParentConfig.HEIGHT, density))
                                     //.fillMaxWidth(0.16f)

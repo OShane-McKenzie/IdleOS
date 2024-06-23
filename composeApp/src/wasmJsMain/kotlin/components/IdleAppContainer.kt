@@ -12,10 +12,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +30,6 @@ import idleos.composeapp.generated.resources.close
 import idleos.composeapp.generated.resources.max
 import idleos.composeapp.generated.resources.min
 import kotlinx.coroutines.delay
-import layoutConfigurator
 import models.IdleAppModel
 import objects.AnimationStyle
 import objects.ParentConfig
@@ -165,7 +161,7 @@ fun IdleAppContainer(
                                 Text(app.name, color = contentProvider.globalTextColor.value)
                             }
                             ImageButton(
-                                wallpaper = Res.drawable.min,
+                                image = Res.drawable.min,
                                 modifier = Modifier
                                     .weight(0.1f)
                                     .padding(0.dp)
@@ -181,7 +177,7 @@ fun IdleAppContainer(
                                 isMaximized = false
                             }
                             ImageButton(
-                                wallpaper = Res.drawable.max,
+                                image = Res.drawable.max,
                                 modifier = Modifier
                                     .weight(0.1f)
                                     .padding(0.dp)
@@ -197,7 +193,7 @@ fun IdleAppContainer(
                                 isMinimized = false
                             }
                             ImageButton(
-                                wallpaper = Res.drawable.close,
+                                image = Res.drawable.close,
                                 modifier = Modifier
                                     .weight(0.1f)
                                     .padding(0.dp)

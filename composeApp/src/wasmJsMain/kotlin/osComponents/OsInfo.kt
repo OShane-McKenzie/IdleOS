@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import components.SimpleAnimator
 import contentProvider
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import objects.AnimationStyle
 import objects.ParentConfig
 import percentOfParent
@@ -67,16 +67,25 @@ fun OsInfo(modifier:Modifier = Modifier){
                             shape = RoundedCornerShape(13),
                             color = contentProvider.globalColor.value.copy(alpha = 0.0f)
                         ).padding(3.dp).clickable {
-
+                            contentProvider.isLoggedOut.value = true
                         }
                     )
-                    Text("Shutdown",
+                    Text("Restart",
                         color = contentProvider.globalTextColor.value,
                         modifier = Modifier.fillMaxWidth().background(
                             shape = RoundedCornerShape(13),
                             color = contentProvider.globalColor.value.copy(alpha = 0.0f)
                         ).padding(3.dp).clickable {
-
+                            CoroutineScope(Dispatchers.Default).launch {
+                                withContext(Dispatchers.Main) {
+                                    contentProvider.startApp.value = false
+                                }
+                                delay(200)
+                                withContext(Dispatchers.Main) {
+                                    contentProvider.startApp.value = true
+                                    contentProvider.isLoggedOut.value = true
+                                }
+                            }
                         }
                     )
                 }

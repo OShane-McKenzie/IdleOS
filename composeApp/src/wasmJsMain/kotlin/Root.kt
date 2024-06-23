@@ -1,11 +1,9 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -39,12 +37,9 @@ import idleos.composeapp.generated.resources.*
 import idleos.composeapp.generated.resources.Res
 import kotlinx.coroutines.*
 import models.IdleAppModel
-import objects.AnimationStyle
-import objects.ParentConfig
+import objects.*
 import org.jetbrains.compose.resources.painterResource
 import osComponents.*
-import objects.LayoutValues
-import objects.ScreenType
 
 class Root {
 
@@ -70,17 +65,23 @@ class Root {
         var reloadWallpaper by remember {
             mutableStateOf(false)
         }
-        var startApp by remember {
-            mutableStateOf(false)
-        }
+
 
         LaunchedEffect(Unit){
             //required to avoid layout calculations NaN value bug
             delay(2000)
-            startApp = true
+            fileSystemLogs.value+="System restarted at: ${getDateTimeToString()}\n"
+            contentProvider.startApp.value = true
+        }
+        LaunchedEffect(layoutConfigurator.parentWidth.value, layoutConfigurator.parentHeight.value){
+            if(contentProvider.startApp.value ){
+                fileSystemLogs.value+="Adjusting to screen-height: ${layoutConfigurator.parentHeight.value}\n"
+                fileSystemLogs.value+="Adjusting to screen-width: ${layoutConfigurator.parentWidth.value}\n"
+            }
+
         }
         Box(modifier = Modifier.fillMaxSize()){
-            if(startApp){
+            if(contentProvider.startApp.value ){
                 Box(
                     modifier = Modifier.fillMaxSize().onGloballyPositioned {
                         layoutConfigurator.parentWidth.value = with(density){it.size.width.toDp().toInt(density)}
@@ -254,12 +255,26 @@ class Root {
                                 modifier = Modifier.fillMaxHeight().wrapContentWidth(),
                                 height = (height*0.75f),
                                 width = (width*0.02f),
-                                id = "Launcher"
+                                id = "Launcher",
+                                iconBg = contentProvider.globalColor.value.copy(alpha = 0.8f)
                             ){
-
+                                LayoutValues.showIdleLauncher.value = true
                             }
-                            Spacer(modifier = Modifier.width(5.dp))
+                            Spacer(modifier = Modifier.width(17.dp))
+                            Column(
+                                modifier = Modifier
+                                    .padding(1.dp)
+                                    .width(2.dp)
+                                    .fillMaxHeight(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+
+                            ) {
+                                Divider(modifier = Modifier.fillMaxHeight(0.5f), color = contentProvider.globalTextColor.value, thickness = 2.dp)
+                            }
+                            Spacer(modifier = Modifier.width(17.dp))
                             appProvider.appList.forEach { app ->
+
                                 DockItem(
                                     modifier = Modifier.fillMaxHeight().wrapContentWidth(),
                                     height = (height*0.75f),
@@ -320,6 +335,11 @@ class Root {
                                 if(it == "Change Wallpaper"){
                                     LayoutValues.showWallpaperPicker.value = true
                                 }
+                                if(it=="Settings"){
+                                    settingsAppNavigator.setViewState(DockAndPanel)
+                                    contentProvider.settingsAppControllerIndex.value = idleSettingsScreens.indexOf(settingsAppNavigator.getView())
+                                    appProvider.startApp("Settings")
+                                }
                             }
                         }
                         if(LayoutValues.showWallpaperPicker.value){
@@ -336,6 +356,7 @@ class Root {
                         }
 
                         appProvider.Show()
+                        IdleLauncher()
                     }
                     //Brightness overlay
                     Column(modifier = Modifier
@@ -345,6 +366,10 @@ class Root {
                     ){
                     }
 
+                    if(contentProvider.isLoggedOut.value){
+                        turnOnWidget("none")
+                        LockScreen()
+                    }
                 }
             }else{
                 Text(
@@ -352,6 +377,7 @@ class Root {
                     modifier = Modifier.align(Alignment.Center),
                     fontSize = 32.sp, fontWeight = FontWeight.Bold
                 )
+
             }
         }
     }

@@ -135,7 +135,6 @@ fun InfoCenter(modifier: Modifier = Modifier){
                                 }
                             }
                         }
-
                     }
                     Text("System Logs", color = contentProvider.globalTextColor.value,
                         fontWeight = FontWeight.Bold)
@@ -144,7 +143,7 @@ fun InfoCenter(modifier: Modifier = Modifier){
                         horizontalAlignment = Alignment.Start,
                         modifier = Modifier.fillMaxWidth().fillMaxHeight().verticalScroll(scrollState)
                     ) {
-                        Text(fileSystemLogs.value)
+                        Text(fileSystemLogs.value, color = contentProvider.globalTextColor.value)
                     }
 
                 }

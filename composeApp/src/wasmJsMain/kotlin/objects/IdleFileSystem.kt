@@ -164,9 +164,11 @@ class IdleFileSystem {
             permission = mutableStateOf(Permission.READ_WRITE_EXECUTE),
             dirs = addDirs(rootDirectory).dirs.toMutableStateList()
         )
+        directoryMap["/"] = rootFileSystem
     }
 
     fun getRootFileSystem():IdleDirectory{
+
         return rootFileSystem
     }
 
@@ -188,12 +190,12 @@ class IdleFileSystem {
         val home = root.dirs.find { it.name.value == "home" }
         val pictures = home?.dirs?.find { it.name.value == "Pictures" }
 
-//        fileSystemLogs.value += "Root directories: ${root.dirs.map { it.name.value }}\n\n"
-//        println("Root directories: ${root.dirs.map { it.name.value }}")
-//        home?.let {
-//            fileSystemLogs.value += "Home directories: ${it.dirs.map { dir -> dir.name.value }}\n"
-//            println("Home directories: ${it.dirs.map { dir -> dir.name.value }}")
-//        }
+        fileSystemLogs.value += "Root directories: ${root.dirs.map { it.name.value }}\n\n"
+        println("Root directories: ${root.dirs.map { it.name.value }}")
+        home?.let {
+            fileSystemLogs.value += "Home directories: ${it.dirs.map { dir -> dir.name.value }}\n"
+            println("Home directories: ${it.dirs.map { dir -> dir.name.value }}")
+        }
         pictures?.let {
             fileSystemLogs.value += "Pictures files: ${it.files.map { file -> file.name.value }}\n\n"
             fileSystemLogs.value += "Pictures dirs: ${it.dirs.map { file -> file.name.value }}\n\n"
