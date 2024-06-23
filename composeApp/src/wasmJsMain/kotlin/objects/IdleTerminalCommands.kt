@@ -29,7 +29,7 @@ class IdleTerminalCommands {
         content = mutableStateOf("")
     )
 
-    fun cpuInfo(): String {
+    private fun cpuInfo(): String {
         var cpu = ""
         for (i in 0..cpuCores) {
             cpu += getSimulatedCpuInfo(i)
