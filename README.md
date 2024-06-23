@@ -38,8 +38,8 @@ We welcome contributions from the community! If you're interested in helping us 
 
 ### Help Wanted
 
-- **Browser**: Develop a functional browser to enhance the desktop experience.
-- **Text Editor**: Create a powerful and easy-to-use text editor.
+- **Browser**: Develop a browser to enhance the desktop experience.
+- **Text Editor**: Create a text editor.
 
 ### How to Contribute
 
