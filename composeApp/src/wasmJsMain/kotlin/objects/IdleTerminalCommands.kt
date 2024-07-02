@@ -124,7 +124,7 @@ class IdleTerminalCommands {
                     withContext(Dispatchers.Main) {
                         contentProvider.startApp.value = false
                     }
-                    delay(200)
+                    delay(2000)
                     withContext(Dispatchers.Main) {
                         contentProvider.startApp.value = true
                     }
