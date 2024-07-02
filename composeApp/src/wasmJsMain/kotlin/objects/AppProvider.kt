@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import apps.IdleFileManager
@@ -83,6 +84,16 @@ class AppProvider {
         Box(modifier = Modifier.fillMaxSize()) {
             appList.forEach { app ->
                 if (displayedApps.contains(app.name)) {
+                    var isActive by remember { mutableStateOf(true) }
+                    if(selectedApp.value == ""){
+                        selectedApp.value = app.name
+                    }
+                    if(displayedApps.size == 1){
+                        selectedApp.value = app.name
+                    }
+                    LaunchedEffect(app.name){
+                        selectedApp.value = app.name
+                    }
                     IdleAppContainer(
                         modifier = Modifier
                             .offset { IntOffset(app.offsetX.value.roundToInt(), app.offsetY.value.roundToInt()) }
@@ -108,7 +119,15 @@ class AppProvider {
                                     }
                                 }
                             }
-                            .zIndex(if(selectedApp.value==app.name){1f}else{0f})
+                            .zIndex(
+                                if(selectedApp.value==app.name){
+                                    isActive = true
+                                    1f
+                                }else{
+                                    isActive = false
+                                    0f
+                                }
+                            )
                             .align(app.alignment.value),
                         onMaximize = {
                             app.offsetX.value = 0f
@@ -125,7 +144,8 @@ class AppProvider {
                         },
                         app = app,
                         displayWindow = addedApps.contains(app.name),
-                        isMoving = app.offsetX.value != 0f || app.offsetY.value != 0f
+                        isMoving = app.offsetX.value != 0f || app.offsetY.value != 0f,
+                        isInactive = !isActive
                     )
                 }
             }

@@ -20,7 +20,8 @@ import richColors
 import settingsAppNavigator
 
 @Composable
-fun IdleSettings(modifier: Modifier = Modifier){
+fun IdleSettings(
+    modifier: Modifier = Modifier){
     val scrollState = rememberScrollState()
     Box(){
         Row(modifier = modifier) {

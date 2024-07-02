@@ -17,14 +17,15 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import components.SimpleAnimator
+import components.IdleTextField
 import contentProvider
 import idleTerminalCommands
 import kotlinx.coroutines.delay
-import objects.LayoutValues
+
 
 @Composable
 fun IdleTerminal(){
@@ -47,15 +48,20 @@ fun IdleTerminal(){
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        Row(modifier = Modifier.padding(start = 16.dp)){
+        Row(modifier = Modifier.padding(start = 16.dp, bottom = 0.dp, top = 0.dp)){
             Text(
-                "Supported commands: ${terminal.commandList.joinToString(" ") { it }}",
-                color = contentProvider.globalTextColor.value
+                "Supported commands: ${terminal.commandList.joinToString(", ") { it.trim() }}",
+                color = contentProvider.globalTextColor.value,
+                fontWeight = FontWeight.Bold,
+                style = LocalTextStyle.current.copy(
+                    fontStyle = FontStyle.Italic
+                )
             )
         }
-        Spacer(modifier = Modifier.height(3.dp))
-        Row(modifier = Modifier.padding(start = 16.dp)){ Text(terminal.idleOutputStream.value, color = contentProvider.globalTextColor.value) }
-        TextField(
+        if(terminal.idleOutputStream.value.isNotEmpty()){
+            Row(modifier = Modifier.padding(start = 16.dp, bottom = 0.dp, top = 0.dp).wrapContentHeight()){ Text(terminal.idleOutputStream.value, color = contentProvider.globalTextColor.value, modifier = Modifier.padding(0.dp)) }
+        }
+        IdleTextField(
             value = terminal.idleInputStream.value,
             onValueChange = {
                 if(it.contains("\n")){
@@ -64,12 +70,13 @@ fun IdleTerminal(){
                     terminal.idleInputStream.value = it
                 }
                 },
-            placeholder = { Text("[${contentProvider.getSecrets().first}@IdleOS]$", color = contentProvider.globalTextColor.value,style = LocalTextStyle.current.copy(
+            placeholder = {
+                Text("[${contentProvider.getSecrets().first}@IdleOS]$", color = contentProvider.globalTextColor.value,style = LocalTextStyle.current.copy(
                 fontStyle = FontStyle.Italic
             )) },
             modifier = Modifier
                 .fillMaxWidth(0.5f)
-                .padding(0.dp)
+                .padding(all = 0.dp)
                 .onKeyEvent {
                     if (it.type == KeyEventType.KeyDown && it.key == Key.Enter) {
                         terminal.inputParser(terminal.idleInputStream.value)
