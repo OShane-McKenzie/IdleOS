@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
-
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import apps.IdleFileManager
@@ -27,7 +26,6 @@ import idleos.composeapp.generated.resources.file_manager
 import idleos.composeapp.generated.resources.settings
 import idleos.composeapp.generated.resources.terminal
 import models.IdleAppModel
-import toRoundedInt
 import kotlin.math.roundToInt
 
 class AppProvider {

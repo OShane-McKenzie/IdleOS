@@ -1,4 +1,6 @@
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import idleos.composeapp.generated.resources.*
@@ -32,7 +34,13 @@ fun main() {
     startDateTimeWatcher()
     startRamUsageWatcher()
     startNetUsageWatcher()
+
     ComposeViewport(document.body!!) {
+        LaunchedEffect(true){
+            contentFetcher("/test.html"){
+                fileSystemLogs.value+=it.responseValue
+            }
+        }
         App()
     }
 }

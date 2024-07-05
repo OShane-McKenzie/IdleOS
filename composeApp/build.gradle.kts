@@ -39,6 +39,8 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-io:0.1.16")
+                implementation("com.squareup.okio:okio:3.9.0")
             }
         }
     }

@@ -7,13 +7,23 @@ import idleos.composeapp.generated.resources.Res
 import idleos.composeapp.generated.resources.*
 import jsFeatures.getNetworkInfo
 import jsFeatures.getRamInfo
+import kotlinx.browser.window
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import objects.LayoutValues
 import objects.ParentConfig
-import objects.ScreenType
-import org.jetbrains.compose.resources.DrawableResource
 import kotlin.math.floor
+
+import kotlinx.browser.window
+import kotlinx.coroutines.await
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import models.ResponseModel
+import okio.FileSystem
+import okio.*
+import okio.FileSystem.*
+import okio.Path
+import org.w3c.fetch.Response
 
 fun calculateScreenRatio(height: Int, width: Int): Float {
     require(height > 0) { "Height must be a positive integer" }
@@ -354,3 +364,31 @@ fun String.trimStart(): String {
     }
     return substring(startIndex)
 }
+
+
+fun contentFetcher(url: String, callback: (ResponseModel) -> Unit) {
+    window.fetch(url)
+        .then {
+            if (it.ok) {
+                it.text().then { response ->
+                    callback(ResponseModel(response.toString(), true))
+                    null
+                }
+            } else {
+                callback(ResponseModel("Not found\n", true))
+            }
+            null
+        }
+        .catch { error->
+            callback(ResponseModel("$error", true))
+            null
+        }
+}
+
+
+
+
+
+
+
+

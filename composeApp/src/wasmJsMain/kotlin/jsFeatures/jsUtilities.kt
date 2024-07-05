@@ -1,6 +1,8 @@
 package jsFeatures
-
+import kotlinx.coroutines.await
 import org.w3c.dom.events.Event
+import kotlin.js.Promise
+
 
 external interface NetworkInformation {
     val downLink: Double
@@ -47,3 +49,16 @@ fun getNetworkInfo(): String {
         .replace("false","No")
         .replace("true","Yes")
 }
+
+//@JsModule("./contentFetcher.mjs")
+//external fun fetchContent(url: String): Promise<JsString?>
+//
+//suspend fun fetchContentFromUrl(url: String): String? {
+//    return try {
+//        fetchContent(url).await()
+//    } catch (e: Throwable) {
+//        null
+//    }
+//}
+
+
