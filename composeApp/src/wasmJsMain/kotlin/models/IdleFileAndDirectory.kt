@@ -15,6 +15,10 @@ import objects.Permission
 import org.jetbrains.compose.resources.DrawableResource
 import wallpaperMap
 import kotlin.math.abs
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class User(val name: String, val age: Int)
 
 data class IdleFile(
     val id:String = abs((0..999999999999999).random()).toString(),

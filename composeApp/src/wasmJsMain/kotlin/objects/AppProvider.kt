@@ -1,12 +1,12 @@
 package objects
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -15,12 +15,15 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import apps.IdleFileManager
 import apps.IdleSettings
 import apps.IdleTerminal
 import components.IdleAppContainer
+import components.WebAppCreator
 import contentProvider
+import idleos.composeapp.generated.resources.*
 import idleos.composeapp.generated.resources.Res
 import idleos.composeapp.generated.resources.file_manager
 import idleos.composeapp.generated.resources.settings
@@ -34,6 +37,7 @@ class AppProvider {
     val runningApps:SnapshotStateList<String> = mutableStateListOf()
     val selectedApp = mutableStateOf("")
     init {
+
         appList.add(
             IdleAppModel().apply {
                 this.name = "Settings"
@@ -41,6 +45,7 @@ class AppProvider {
                 this.icon = Res.drawable.settings
             }
         )
+
         appList.add(
             IdleAppModel().apply {
                 this.name = "File Manager"
@@ -53,6 +58,36 @@ class AppProvider {
                 this.name = "Terminal"
                 this.icon = Res.drawable.terminal
                 this.app = { IdleTerminal() }
+            }
+        )
+        appList.add(
+            IdleAppModel().apply {
+                this.name = "Kotlin Playground"
+                this.app = { WebAppCreator(url = "https://play.kotlinlang.org") }
+                this.icon = Res.drawable.kt
+            }
+        )
+
+        appList.add(
+            IdleAppModel().apply {
+                this.name = "Youtube"
+                this.app = { WebAppCreator(url = "https://www.youtube.com/embed/videoseries?si=URwpXOLzPX0YMp3_&amp;list=PLA_DQieiEY4L738ANYePwWUkQqFDeeXvu&autoplay=1&mute=1") }
+                this.icon = Res.drawable.youtube
+            }
+        )
+        appList.add(
+            IdleAppModel().apply {
+                this.name = "Google Sheets"
+                this.app = { WebAppCreator(url = "https://docs.google.com/spreadsheets/d/1nWi1kNJfSeNbEeWzMB-mjv_hEaN_lbdF0H8SQd3OMdo/edit?usp=sharing") }
+                this.icon = Res.drawable.sheets
+            }
+        )
+
+        appList.add(
+            IdleAppModel().apply {
+                this.name = "Google Docs"
+                this.app = { WebAppCreator(url = "https://docs.google.com/document/d/11T5rHOLyFm_h3toGQby8jUCnVNnkr-F8Ni86SwNvfL8/edit?usp=sharing") }
+                this.icon = Res.drawable.docs
             }
         )
     }

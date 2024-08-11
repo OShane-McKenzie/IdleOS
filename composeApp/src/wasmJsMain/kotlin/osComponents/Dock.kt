@@ -56,7 +56,7 @@ fun Dock(modifier: Modifier = Modifier, items: @Composable (Float,Float)-> Unit=
                     width = with(density){ it.size.width.toDp().toFloat(density) }
                 }
                 .background(
-                    shape = RoundedCornerShape(1),
+                    shape = RoundedCornerShape(100),
                     color = contentProvider.globalColor.value.copy(alpha = contentProvider.globalTransparency.value)
                 ).padding(0.dp),
             verticalAlignment = Alignment.Top,

@@ -59,7 +59,7 @@ class Root {
 
         var rightClickOffset by remember { mutableStateOf<Offset?>(null) }
         var wallpaper by remember {
-            mutableStateOf(Res.drawable.one)
+            mutableStateOf(Res.drawable.sixteen)
         }
 
         var reloadWallpaper by remember {

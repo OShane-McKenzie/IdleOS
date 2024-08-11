@@ -13,17 +13,9 @@ import kotlinx.datetime.*
 import objects.LayoutValues
 import objects.ParentConfig
 import kotlin.math.floor
-
-import kotlinx.browser.window
-import kotlinx.coroutines.await
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import models.ResponseModel
-import okio.FileSystem
-import okio.*
-import okio.FileSystem.*
-import okio.Path
-import org.w3c.fetch.Response
+
 
 fun calculateScreenRatio(height: Int, width: Int): Float {
     require(height > 0) { "Height must be a positive integer" }
@@ -254,10 +246,21 @@ val wallPapers = listOf(
     Res.drawable.fourteen,
     Res.drawable.fifteen,
     Res.drawable.sixteen,
+    Res.drawable.seventeen,
     Res.drawable.eighteen,
     Res.drawable.nineteen,
-    Res.drawable.twenty
+    Res.drawable.twenty,
+    Res.drawable.twentyone,
+    Res.drawable.twentytwo,
+    Res.drawable.twentythree,
+    Res.drawable.twentyfour,
+    Res.drawable.twentyfive,
+    Res.drawable.twentysix,
+    Res.drawable.twentyseven,
+    Res.drawable.twentyeight,
+    Res.drawable.twentynine
 )
+
 
 fun getSimulatedCpuInfo(core:Int):String{
     return """
