@@ -19,7 +19,21 @@ fun WebAppCreator(modifier: Modifier = Modifier, url:String){
             .background(color = contentProvider.globalColor.value.copy(alpha = 0.0f), shape = RoundedCornerShape(5)),
         factory = {
 
+//            val div = createElement("div"){
+//                setAttribute("id", "container")
+//                appendElement("script"){
+//                    setAttribute("src","https://code.jquery.com/jquery-3.7.1.js")
+//                    setAttribute("integrity","sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=")
+//                    setAttribute("integrity", "anonymous")
+//                }
+//                appendElement("script"){
+//                    append("""
+//                    $("#container").load("$url")
+//                """.trimIndent())
+//
+//                }
 
+//            }
             val frame = createElement("iframe"){
                 setAttribute("id","frame")
                 setAttribute("src", url)
@@ -30,6 +44,7 @@ fun WebAppCreator(modifier: Modifier = Modifier, url:String){
             }
 
             frame
+
         }
 
     )

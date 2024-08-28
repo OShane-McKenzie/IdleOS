@@ -141,7 +141,11 @@ private fun ColorThemeSettings(modifier: Modifier = Modifier){
             }
             HorizontalScrollbar(
                 modifier = Modifier.align(Alignment.BottomCenter),
-                adapter = rememberScrollbarAdapter(panelColorScroll)
+                adapter = rememberScrollbarAdapter(panelColorScroll),
+                style = LocalScrollbarStyle.current.copy(
+                    hoverColor = contentProvider.globalTextColor.value,
+                    unhoverColor = contentProvider.globalTextColor.value.copy(alpha = 0.6f)
+                )
             )
         }
         Spacer(modifier = Modifier.height(3.dp))
@@ -173,7 +177,11 @@ private fun ColorThemeSettings(modifier: Modifier = Modifier){
             }
             HorizontalScrollbar(
                 modifier = Modifier.align(Alignment.BottomCenter),
-                adapter = rememberScrollbarAdapter(textColorScroll)
+                adapter = rememberScrollbarAdapter(textColorScroll),
+                style = LocalScrollbarStyle.current.copy(
+                    hoverColor = contentProvider.globalTextColor.value,
+                    unhoverColor = contentProvider.globalTextColor.value.copy(alpha = 0.6f)
+                )
             )
         }
         Spacer(modifier = Modifier.height(3.dp))
@@ -203,7 +211,11 @@ private fun ColorThemeSettings(modifier: Modifier = Modifier){
             }
             HorizontalScrollbar(
                 modifier = Modifier.align(Alignment.BottomCenter),
-                adapter = rememberScrollbarAdapter(indicatorColorScroll)
+                adapter = rememberScrollbarAdapter(indicatorColorScroll),
+                style = LocalScrollbarStyle.current.copy(
+                    hoverColor = contentProvider.globalTextColor.value,
+                    unhoverColor = contentProvider.globalTextColor.value.copy(alpha = 0.6f)
+                )
             )
         }
     }

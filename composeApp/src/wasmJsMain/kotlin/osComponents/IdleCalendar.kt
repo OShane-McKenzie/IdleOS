@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -182,7 +183,8 @@ fun DayBox(day: String, isToday:Boolean = false) {
             text = day,
             color = contentProvider.globalTextColor.value,
             fontWeight = if(isToday) FontWeight.ExtraBold else FontWeight.Normal,
-            fontSize = if(isToday) 20.sp else 16.sp
+            fontSize = if(isToday) 32.sp else 16.sp,
+            fontStyle = if(isToday) FontStyle.Italic else FontStyle.Normal
         )
     }
 }

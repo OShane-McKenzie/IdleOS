@@ -9,14 +9,15 @@ import fileSystem
 import models.IdleDirectory
 
 class ContentProvider {
+    val showAbout = mutableStateOf(false)
     val defaultPanelHeightScaleFactor = 0.05f
     val defaultDockHeightScaleFactor = 0.06f
     val defaultGlobalTransparency = 0.6f
     val settingsAppControllerIndex = mutableStateOf(0)
-    val globalColor = mutableStateOf(Color(0xffffffff))
+    val globalColor = mutableStateOf(Color(0xff000000))
     val globalTransparency = mutableFloatStateOf(defaultGlobalTransparency)
-    val globalTextColor = mutableStateOf(Color(0xff000000))
-    val activeDockItemIndicator = mutableStateOf(Color(0xff000000))
+    val globalTextColor = mutableStateOf(Color(0xFFFF0000))
+    val activeDockItemIndicator = mutableStateOf(Color(0xFFFF0000))
     val inactiveDockItemIndicator = mutableStateOf(Color(0xff706e6e))
     val launchedDockItems:SnapshotStateList<String> = mutableStateListOf()
     val dockHeight = mutableFloatStateOf(8.0f)

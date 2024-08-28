@@ -40,6 +40,7 @@ import models.IdleAppModel
 import objects.*
 import org.jetbrains.compose.resources.painterResource
 import osComponents.*
+import kotlin.math.roundToInt
 
 class Root {
 
@@ -59,7 +60,7 @@ class Root {
 
         var rightClickOffset by remember { mutableStateOf<Offset?>(null) }
         var wallpaper by remember {
-            mutableStateOf(Res.drawable.sixteen)
+            mutableStateOf(Res.drawable.twentynine)
         }
 
         var reloadWallpaper by remember {
@@ -342,13 +343,35 @@ class Root {
                                 }
                             }
                         }
+                        if(contentProvider.showAbout.value){
+                            var moveX by remember { mutableStateOf(0f) }
+                            var moveY by remember { mutableStateOf(0f) }
+                            IdleAbout(
+                                modifier = Modifier
+                                    .offset { IntOffset(moveX.roundToInt(), moveY.roundToInt()) }
+                                    .pointerInput(Unit) {
+                                        detectDragGestures { change, dragAmount ->
+                                            change.consume()
+                                            moveX += dragAmount.x
+                                            moveY += dragAmount.y
+                                        }
+                                        detectTapGestures { }
+                                    }
+                                    .fillMaxWidth(0.25f)
+                                    .fillMaxHeight(0.5f)
+                                    .align(Alignment.Center)
+                            ){
+                                contentProvider.showAbout.value = false
+                            }
+                        }
                         if(LayoutValues.showWallpaperPicker.value){
+
                             WallpaperPicker(
                                 onDismissRequest = {LayoutValues.showWallpaperPicker.value = false},
                                 modifier = Modifier.offset {
                                     IntOffset(10, layoutConfigurator.parentHeight.value-(layoutConfigurator.parentHeight.value*0.3f).toInt())
-                                }.fillMaxWidth(0.98f).fillMaxHeight(0.2f).align(Alignment.TopCenter)
-
+                                }
+                                    .fillMaxWidth(0.98f).fillMaxHeight(0.2f).align(Alignment.TopCenter)
                             ) {
                                 wallpaper = it
                                 reloadWallpaper = !reloadWallpaper

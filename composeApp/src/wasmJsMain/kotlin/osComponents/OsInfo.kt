@@ -16,6 +16,7 @@ import kotlinx.coroutines.*
 import objects.AnimationStyle
 import objects.ParentConfig
 import percentOfParent
+import turnOnWidget
 
 /**
  * Renders the OS information component.
@@ -58,7 +59,8 @@ fun OsInfo(modifier:Modifier = Modifier){
                             shape = RoundedCornerShape(13),
                             color = contentProvider.globalColor.value.copy(alpha = 0.0f)
                         ).padding(3.dp).clickable {
-
+                            contentProvider.showAbout.value = !contentProvider.showAbout.value
+                            turnOnWidget("none")
                         }
                     )
                     Text("Logout",
