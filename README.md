@@ -62,6 +62,4 @@ This project is licensed under the GPL-3 License. See the [LICENSE](LICENSE) fil
 ---
 
 Thank you for checking out IdleOS! We hope you enjoy using it and look forward to your contributions.
-
 ---
-![](https://komarev.com/ghpvc/?username=Oshane-McKenzie&color=green)
